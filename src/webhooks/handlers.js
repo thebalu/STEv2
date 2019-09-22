@@ -53,3 +53,5 @@ const callSendAPI = (sender_psid, response, cb = null) => {
         }
     })
 }
+
+module.exports = router

@@ -44,6 +44,7 @@ const getNextTipForUser = (userId) => {
   return getTipById(lastSeen+1)
 }
 
+/* Test */
 //newUser('Zoltan')
 //console.log(getTipById(1))
 //setSeen('Zoltan', 1)
