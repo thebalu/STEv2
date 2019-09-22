@@ -82,6 +82,7 @@ const callSendAPI = (sender_psid, response, cb = null) => {
   }
 
   console.log("sending")
+  console.log("accesstoker: "+ config.util.getEnv('fb_access_token'))
   // Send the HTTP request to the Messenger Platform
   request({
     "uri": "https://graph.facebook.com/v2.6/me/messages",
