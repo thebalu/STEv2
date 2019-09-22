@@ -90,7 +90,7 @@ const callSendAPI = (sender_psid, response, cb = null) => {
     "json": request_body
   }, (err, res, body) => {
     if (!err) {
-      console.log("response was:" + res)
+      console.log("response was:" + JSON.stringify(res))
       if (cb) {
         cb()
       }
