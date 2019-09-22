@@ -39,7 +39,10 @@ const getNextTipForUser = (userId) => {
   .find({id: userId})
   .get('seen')
   .value()
-  if(seen.length == 0) return 1;
+  if(seen.length == 0) {
+    setSeen(userId, 1)    
+    return getTipById(1);
+  }
   const lastSeen = seen[seen.length - 1]
   setSeen(userId, lastSeen+1)
   return getTipById(lastSeen+1)
