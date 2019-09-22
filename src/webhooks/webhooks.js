@@ -8,7 +8,7 @@ const {
 
 // Adds support for GET requests to our webhook
 // This is used for Facebook to connect our server
-app.get('/webhook', (req, res) => {
+router.get('/webhook', (req, res) => {
 
     // Your verify token. Should be a random string.
     let VERIFY_TOKEN = "chatbot"
@@ -37,7 +37,7 @@ app.get('/webhook', (req, res) => {
 })
 
 // Creates the endpoint for our webhook
-app.post('/webhook', (req, res) => {
+router.post('/webhook', (req, res) => {
 
     let body = req.body
 
