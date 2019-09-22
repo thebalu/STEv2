@@ -1,5 +1,6 @@
 const templates = require('./templates')
 const db = require('../resources/dbAPI')
+request = require('request')
 
 const handleMessage = (sender_psid, received_message) => {
   let response = { "text": "Hello world" }
