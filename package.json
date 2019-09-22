@@ -1,0 +1,26 @@
+{
+  "name": "savetheearth",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abelkocsis/SaveTheEarth.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/abelkocsis/SaveTheEarth/issues"
+  },
+  "homepage": "https://github.com/abelkocsis/SaveTheEarth#readme",
+  "dependencies": {
+    "dotenv": "^8.1.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.7.1",
+    "node-fetch": "^2.6.0",
+  }
+}
