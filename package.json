@@ -14,13 +14,13 @@
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/abelkocsis/SaveTheEarth/issues"
+    "url": "https://github.com/thebalu/STEv2/issues"
   },
-  "homepage": "https://github.com/abelkocsis/SaveTheEarth#readme",
+  "homepage": "https://github.com/thebalu/STEv2#readme",
   "dependencies": {
     "dotenv": "^8.1.0",
     "express": "^4.17.1",
-    "mongoose": "^5.7.1",
-    "node-fetch": "^2.6.0",
+    "lowdb": "^1.0.0",
+    "node-fetch": "^2.6.0"
   }
 }
