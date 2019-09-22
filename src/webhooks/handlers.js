@@ -1,6 +1,7 @@
 const templates = require('./templates')
 const db = require('../resources/dbAPI')
-request = require('request')
+const request = require('request')
+const config = require('config')
 
 const handleMessage = (sender_psid, received_message) => {
   let response = { "text": "Hello world" }
@@ -84,7 +85,7 @@ const callSendAPI = (sender_psid, response, cb = null) => {
   // Send the HTTP request to the Messenger Platform
   request({
     "uri": "https://graph.facebook.com/v2.6/me/messages",
-    "qs": { "access_token": config.get('facebook.page.access_token') },
+    "qs": { "access_token": config.get('fb_access_token') },
     "method": "POST",
     "json": request_body
   }, (err, res, body) => {

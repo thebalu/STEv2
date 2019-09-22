@@ -21,6 +21,7 @@
     "express": "^4.17.1",
     "lowdb": "^1.0.0",
     "node-fetch": "^2.6.0",
-    "request": "2.88.0"
+    "request": "^2.88.0",
+    "config": "^3.2.2"
   }
 }
