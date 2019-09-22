@@ -85,7 +85,7 @@ const callSendAPI = (sender_psid, response, cb = null) => {
   // Send the HTTP request to the Messenger Platform
   request({
     "uri": "https://graph.facebook.com/v2.6/me/messages",
-    "qs": { "access_token": config.get('fb_access_token') },
+    "qs": { "access_token": config.util.getEnv('fb_access_token') },
     "method": "POST",
     "json": request_body
   }, (err, res, body) => {
