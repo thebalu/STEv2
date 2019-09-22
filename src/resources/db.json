@@ -43,5 +43,15 @@
       "description": "A szerves hulladékot gyűjtsd külön, kezdj el komposztálni! Ha elégetünk egy kupac avart (ami ugye szerves anyag) 6 óra alatt, az felér 250 busz 24 órás folyamatos közlekedésével. Ugye, hogy inkább komposztáljunk?"
     }
   ],
-  "users": []
+  "users": [
+    {
+      "id": "Zoltan",
+      "seen": [
+        1,
+        2,
+        3,
+        4
+      ]
+    }
+  ]
 }
