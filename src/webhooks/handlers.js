@@ -1,6 +1,7 @@
 const templates = require('./templates')
+const db = require('../resources/dbAPI')
 
-export const handleMessage = (sender_psid, received_message) => {
+const handleMessage = (sender_psid, received_message) => {
   let response = { "text": "Hello world" }
 
   if (received_message.text) {
@@ -8,7 +9,7 @@ export const handleMessage = (sender_psid, received_message) => {
   }
 }
 
-export const handlePostback = (sender_psid, received_postback) => {
+const handlePostback = (sender_psid, received_postback) => {
   let response
 
   let payload = received_postback.payload
@@ -32,9 +33,23 @@ export const handlePostback = (sender_psid, received_postback) => {
       break;
 
     case 'YES':
+      nextTip = db.getNextTipForUser(sender_psid);
+      tipText = "*" + nextTip.longTitle + ":* " + nextTip.description + '\n Szólj, ha kész vagy!'
 
+      response = templates.buttonMessage(
+        tipText,
+        [templates.button('Kész vagyok', 'DONE'),
+        templates.button('Másikat kérek', 'YES')] // ez another volt
+      )
+      break;
 
+    case 'NO':
+      response = { "text": 'Ilyet nem csinálhatsz.' }
   }
+
+  callSendAPI(sender_psid, response)
+
+
 
   // if (payload === 'GET_STARTED') {
   //   response = templates.buttonMessage(
@@ -47,12 +62,12 @@ export const handlePostback = (sender_psid, received_postback) => {
   // } else if (payload === 'DONE') {
   //   response = areYouReadyToTheNextOneTemplate('Remek! :) Jöhet még egy kihívás?')
   //   callSendAPI(sender_psid, response)
-} else if (payload === 'YES' || payload === 'ANOTHER') {
-  response = missionTemplate(getMissionDescription() + "\n Szólj, ha kész vagy!")
-  callSendAPI(sender_psid, response)
-} else if (payload === 'NO') {
-  setTimeout(dailyFirst, 5000, sender_psid)
-}
+  // } else if (payload === 'YES' || payload === 'ANOTHER') {
+  //   response = missionTemplate(getMissionDescription() + "\n Szólj, ha kész vagy!")
+  //   callSendAPI(sender_psid, response)
+  // } else if (payload === 'NO') {
+  //   setTimeout(dailyFirst, 5000, sender_psid)
+  // }
 }
 
 const callSendAPI = (sender_psid, response, cb = null) => {
@@ -64,22 +79,22 @@ const callSendAPI = (sender_psid, response, cb = null) => {
     "message": response
   }
 
-    console.log("sending")
-    // Send the HTTP request to the Messenger Platform
-    request({
-        "uri": "https://graph.facebook.com/v2.6/me/messages",
-        "qs": { "access_token": config.get('facebook.page.access_token') },
-        "method": "POST",
-        "json": request_body
-    }, (err, res, body) => {
-        if (!err) {
-            if (cb) {
-                cb()
-            }
-        } else {
-            console.error("Unable to send message:" + err)
-        }
-    })
+  console.log("sending")
+  // Send the HTTP request to the Messenger Platform
+  request({
+    "uri": "https://graph.facebook.com/v2.6/me/messages",
+    "qs": { "access_token": config.get('facebook.page.access_token') },
+    "method": "POST",
+    "json": request_body
+  }, (err, res, body) => {
+    if (!err) {
+      if (cb) {
+        cb()
+      }
+    } else {
+      console.error("Unable to send message:" + err)
+    }
+  })
 }
 
-module.exports = router
+module.exports = {handleMessage, handlePostback}
