@@ -1,9 +1,8 @@
-const express  = require('express')
+const express = require('express')
+const app     = express()
 
-const Express = express()
 app.use(express.json())
 
-// Start server
 app.listen(3000, () => {
   console.log(`>> Express:\thttp://localhost:${3000}/`)
 })
