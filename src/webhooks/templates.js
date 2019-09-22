@@ -21,4 +21,4 @@ const button = (title, postback) => {
 }
 
 
-module.exports = {button: button, buttonMessage: buttonMessage}
+module.exports = {button, buttonMessage}
