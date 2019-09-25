@@ -18,6 +18,11 @@ const handlePostback = (sender_psid, received_postback) => {
 
   // Set the response based on the postback payload
 
+  if(!db.getUser(sender_psid)) {
+    console.log('Creating user' + sender_psid);
+    db.newUser(sender_psid);
+  }
+  
   switch (payload) {
     case 'GET_STARTED':
       response = templates.buttonMessage(
@@ -82,14 +87,17 @@ const callSendAPI = (sender_psid, response, cb = null) => {
   }
 
   console.log("sending")
+  console.log("accesstoker: "+ config.util.getEnv('Facebook.access_token'))
+  console.log("accesstoken: "+ config.get('Facebook.access_token'))
   // Send the HTTP request to the Messenger Platform
   request({
     "uri": "https://graph.facebook.com/v2.6/me/messages",
-    "qs": { "access_token": config.util.getEnv('fb_access_token') },
+    "qs": { "access_token": config.get('Facebook.access_token') },
     "method": "POST",
     "json": request_body
   }, (err, res, body) => {
     if (!err) {
+      console.log("response was:" + JSON.stringify(res))
       if (cb) {
         cb()
       }
