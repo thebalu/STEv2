@@ -27,6 +27,13 @@ const setSeen = (userId, tipId) => {
   .write()
 }
 
+const setActive = (userId, active) => {
+  db.get('users')
+    .find({id: userId})
+    .set('active', active)
+    .write()
+}
+
 const getTipById = (tipId) => {
   return db.get('tips')
   .find({id: tipId})
@@ -76,4 +83,5 @@ module.exports = {
   getTipById,
   getNextTipForUser,
   getCurrentTipForUser,
+  setActive,
 }

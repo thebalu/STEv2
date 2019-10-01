@@ -4,22 +4,22 @@ const request = require('request')
 const config = require('config')
 
 const handleMessage = (sender_psid, received_message) => {
-  let response1 = { "text": "Szia, hogy állsz a múltkori kihívással? Mutatom mégegyszer:" }
 
+  switch (received_message) {
+    case 'leiratkozás':
+      db.setActive(sender_psid, false);
+      let response = templates.buttonMessage(
+        'Sajnáljuk, hogy itt hagysz minket. Ha meggondolnád magad, és folytatnád a Föld megmentését, kattints a gombra.', [
+        templates.button('Mentsük meg a Földet!', 'ACTIVATE')
+      ])
+      callSendAPI(sender_psid, response);
+      break;
 
-  currentTip = db.getCurrentTipForUser(sender_psid);
-  tipText = "*" + currentTip.longTitle + ":* " + currentTip.description + '\n Szólj, ha kész vagy!'
-
-  response2 = templates.buttonMessage(
-    tipText,
-    [templates.button('Kész vagyok', 'DONE'),
-    templates.button('Másikat kérek', 'YES')] // ez another volt
-  )
-
-  if (received_message.text) {
-    callSendAPI(sender_psid, response1);
-    callSendAPI(sender_psid, response2);
+    default:
+      standardReply(sender_psid, received_message, "Szia, hogy állsz a múltkori kihívással? Mutatom mégegyszer:");
+      break;
   }
+
 }
 
 const handlePostback = (sender_psid, received_postback) => {
@@ -29,11 +29,11 @@ const handlePostback = (sender_psid, received_postback) => {
 
   // Set the response based on the postback payload
 
-  if(!db.getUser(sender_psid)) {
+  if (!db.getUser(sender_psid)) {
     console.log('Creating user' + sender_psid);
     db.newUser(sender_psid);
   }
-  
+
   switch (payload) {
     case 'GET_STARTED':
       response = templates.buttonMessage(
@@ -63,6 +63,11 @@ const handlePostback = (sender_psid, received_postback) => {
 
     case 'NO':
       response = { "text": 'Ilyet nem csinálhatsz.' }
+      break;
+
+    case 'ACTIVATE':
+      standardReply(sender_psid, received_postback, 'Örülünk, hogy újra itt vagy! Folytassuk onnan, ahol a múltkor abbahagytuk. Itt is van az első kihívás:')
+      break;
   }
 
   callSendAPI(sender_psid, response)
@@ -98,8 +103,8 @@ const callSendAPI = (sender_psid, response, cb = null) => {
   }
 
   console.log("sending")
-  console.log("accesstoker: "+ config.util.getEnv('Facebook.access_token'))
-  console.log("accesstoken: "+ config.get('Facebook.access_token'))
+  console.log("accesstoker: " + config.util.getEnv('Facebook.access_token'))
+  console.log("accesstoken: " + config.get('Facebook.access_token'))
   // Send the HTTP request to the Messenger Platform
   request({
     "uri": "https://graph.facebook.com/v2.6/me/messages",
@@ -118,4 +123,22 @@ const callSendAPI = (sender_psid, response, cb = null) => {
   })
 }
 
-module.exports = {handleMessage, handlePostback}
+
+const standardReply = (sender_psid, received_message, before_text) => {
+  let response1 = { "text": before_text }
+  currentTip = db.getCurrentTipForUser(sender_psid);
+  tipText = "*" + currentTip.longTitle + ":* " + currentTip.description + '\n Szólj, ha kész vagy!'
+
+  response2 = templates.buttonMessage(
+    tipText,
+    [templates.button('Kész vagyok', 'DONE'),
+    templates.button('Másikat kérek', 'YES')] // ez another volt
+  )
+
+  if (received_message.text) {
+    callSendAPI(sender_psid, response1);
+    callSendAPI(sender_psid, response2);
+  }
+}
+
+module.exports = { handleMessage, handlePostback }
