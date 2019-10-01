@@ -4,10 +4,21 @@ const request = require('request')
 const config = require('config')
 
 const handleMessage = (sender_psid, received_message) => {
-  let response = { "text": "Hello world" }
+  let response1 = { "text": "Szia, hogy állsz a múltkori kihívással? Mutatom mégegyszer:" }
+
+
+  currentTip = db.getCurrentTipForUser(sender_psid);
+  tipText = "*" + currentTip.longTitle + ":* " + currentTip.description + '\n Szólj, ha kész vagy!'
+
+  response2 = templates.buttonMessage(
+    tipText,
+    [templates.button('Kész vagyok', 'DONE'),
+    templates.button('Másikat kérek', 'YES')] // ez another volt
+  )
 
   if (received_message.text) {
-    callSendAPI(sender_psid, response)
+    callSendAPI(sender_psid, response1);
+    callSendAPI(sender_psid, response2);
   }
 }
 

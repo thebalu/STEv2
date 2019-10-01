@@ -48,6 +48,20 @@ const getNextTipForUser = (userId) => {
   return getTipById(lastSeen+1)
 }
 
+const getCurrentTipForUser = (userId) => {
+  const seen = 
+  db.get('users')
+  .find({id: userId})
+  .get('seen')
+  .value()
+  if(seen.length == 0) {
+    // setSeen(userId, 1)    
+    // should only be called when there was already a tip seen
+    return getTipById(1);
+  }
+  const lastSeen = seen[seen.length - 1]
+  return getTipById(lastSeen)
+}
 /* Test */
 //newUser('Zoltan')
 //console.log(getTipById(1))
@@ -61,4 +75,5 @@ module.exports = {
   setSeen,
   getTipById,
   getNextTipForUser,
+  getCurrentTipForUser,
 }
