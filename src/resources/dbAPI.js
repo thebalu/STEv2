@@ -8,7 +8,8 @@ const newUser = (userId) => {
   db.get('users')
   .push({
     id: userId,
-    seen: []
+    seen: [],
+    active: true
   })
   .write()
 }

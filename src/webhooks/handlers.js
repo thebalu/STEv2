@@ -67,6 +67,7 @@ const handlePostback = (sender_psid, received_postback) => {
       break;
 
     case 'ACTIVATE':
+      db.setActive(sender_psid, true);
       standardReply(sender_psid, received_postback, 'Örülünk, hogy újra itt vagy! Folytassuk onnan, ahol a múltkor abbahagytuk. Itt is van az első kihívás:')
       break;
   }
