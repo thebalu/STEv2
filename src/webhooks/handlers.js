@@ -134,7 +134,7 @@ const standardReply = (sender_psid, received_message, before_text) => {
     templates.button('Másikat kérek', 'YES')] // ez another volt
   )
 
-  if (received_message.text) {
+  if (received_message.text || received_message.payload) {
     callSendAPI(sender_psid, response1);
     callSendAPI(sender_psid, response2);
   }
