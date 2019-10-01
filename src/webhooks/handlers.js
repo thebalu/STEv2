@@ -5,6 +5,7 @@ const config = require('config')
 
 const handleMessage = (sender_psid, received_message) => {
 
+  console.log(received_message)
   switch (received_message) {
     case 'leiratkozás':
       db.setActive(sender_psid, false);
@@ -103,8 +104,6 @@ const callSendAPI = (sender_psid, response, cb = null) => {
   }
 
   console.log("sending")
-  console.log("accesstoker: " + config.util.getEnv('Facebook.access_token'))
-  console.log("accesstoken: " + config.get('Facebook.access_token'))
   // Send the HTTP request to the Messenger Platform
   request({
     "uri": "https://graph.facebook.com/v2.6/me/messages",
