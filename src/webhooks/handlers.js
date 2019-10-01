@@ -5,8 +5,8 @@ const config = require('config')
 
 const handleMessage = (sender_psid, received_message) => {
 
-  console.log(received_message)
-  switch (received_message) {
+  console.log(received_message.text)
+  switch (received_message.text) {
     case 'leiratkozás':
       db.setActive(sender_psid, false);
       let response = templates.buttonMessage(
