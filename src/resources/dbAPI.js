@@ -1,81 +1,59 @@
-const low      = require('lowdb')
-const FileSync = require('lowdb/adapters/FileSync')
+//https://firebase.google.com/docs/firestore/quickstart
 
-const adapter = new FileSync('./src/resources/db.json')
-const db = low(adapter)
+const Firestore  = require('@google-cloud/firestore')
+
+const db = new Firestore({
+  keyFilename: `${__dirname}/serviceAccountKey.json`,
+})
+
 
 const newUser = (userId) => {
-  db.get('users')
-  .push({
+  db.collection('users').doc(userId).set({
     id: userId,
-    seen: [],
+    lastSeen: 0,
     active: true
   })
-  .write()
 }
 
-const getUser = (userId) => {
-  return db.get('users')
-  .find({id: userId})
-  .value()
+const getUser = async (userId) => {
+  return await db.collection('users').doc(userId).get()
+    .then(x => x.data())
 }
 
 const setSeen = (userId, tipId) => {
-  db.get('users')
-  .find({id: userId})
-  .get('seen')
-  .push(tipId)
-  .write()
+  db.collection('users').doc(userId).update({
+    lastSeen: tipId,
+  })
 }
 
 const setActive = (userId, active) => {
-  db.get('users')
-    .find({id: userId})
-    .set('active', active)
-    .write()
+  db.collection('users').doc(userId).update({
+    active
+  })
 }
 
-const getTipById = (tipId) => {
-  return db.get('tips')
-  .find({id: tipId})
-  .value()
+const getTipById = async (tipId) => {
+  return await db.collection('tips').doc(tipId).get()
+      .then(x => x.data())
 }
 
-const getNextTipForUser = (userId) => {
-  const seen = 
-  db.get('users')
-  .find({id: userId})
-  .get('seen')
-  .value()
-  if(seen.length == 0) {
-    setSeen(userId, 1)    
-    return getTipById(1);
-  }
-  const lastSeen = seen[seen.length - 1]
-  setSeen(userId, lastSeen+1)
-  return getTipById(lastSeen+1)
+const getNextTipForUser = async(userId) => {
+  const {lastSeen} = await getUser(userId)
+  return await getTipById(lastSeen+1)
 }
 
-const getCurrentTipForUser = (userId) => {
-  const seen = 
-  db.get('users')
-  .find({id: userId})
-  .get('seen')
-  .value()
-  if(seen.length == 0) {
-    // setSeen(userId, 1)    
-    // should only be called when there was already a tip seen
-    return getTipById(1);
-  }
-  const lastSeen = seen[seen.length - 1]
-  return getTipById(lastSeen)
+const getCurrentTipForUser = async (userId) => {
+  const {lastSeen} = await getUser(userId)
+  return await getTipById(lastSeen)
 }
-/* Test */
-//newUser('Zoltan')
-//console.log(getTipById(1))
-//setSeen('Zoltan', 1)
-//setSeen('Zoltan', 2)
-//console.log(getNextTipForUser('Zoltan'))
+
+const uploadTip = ({id, shortTitle, longTitle, description}) => {
+  db.collection('tips').doc(String(id)).set({
+    shortTitle,
+    longTitle,
+    description
+  })
+}
 
 module.exports = {
   newUser,
@@ -85,4 +63,5 @@ module.exports = {
   getNextTipForUser,
   getCurrentTipForUser,
   setActive,
+  uploadTip,
 }
