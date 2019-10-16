@@ -23,7 +23,7 @@ const handleMessage = (sender_psid, received_message) => {
 
 }
 
-const handlePostback = (sender_psid, received_postback) => {
+const handlePostback = async (sender_psid, received_postback) => {
   let response
 
   let payload = received_postback.payload
@@ -52,7 +52,7 @@ const handlePostback = (sender_psid, received_postback) => {
       break;
 
     case 'YES':
-      nextTip = db.getNextTipForUser(sender_psid);
+      nextTip = await db.getNextTipForUser(sender_psid);
       tipText = "*" + nextTip.longTitle + ":* " + nextTip.description + '\n Szólj, ha kész vagy!'
 
       response = templates.buttonMessage(
@@ -124,9 +124,9 @@ const callSendAPI = (sender_psid, response, cb = null) => {
 }
 
 
-const standardReply = (sender_psid, received_message, before_text) => {
+const standardReply = async (sender_psid, received_message, before_text) => {
   let response1 = { "text": before_text }
-  currentTip = db.getCurrentTipForUser(sender_psid);
+  currentTip = await db.getCurrentTipForUser(sender_psid);
   tipText = "*" + currentTip.longTitle + ":* " + currentTip.description + '\n Szólj, ha kész vagy!'
 
   response2 = templates.buttonMessage(
