@@ -3,10 +3,33 @@ const db = require('../resources/dbAPI')
 const request = require('request')
 const config = require('config')
 
+let titleAdded = false
+let descriptionAdded = false
+let title
+let tipDescription
+
 const handleMessage = (sender_psid, received_message) => {
 
   console.log(received_message.text)
-  switch (received_message.text) {
+  if (titleAdded) {
+    titleAdded = false
+    title = received_message.text
+    response =  { "text": 'Add meg a kihívás leírását!' };
+    descriptionAdded = true
+    callSendAPI(sender_psid, response);
+  }
+  else if (descriptionAdded){
+    tipDescription = received_message.text
+    descriptionAdded = false
+    response = templates.buttonMessage(
+      'Remek! :) Elmented a kihívást?',
+      [templates.button('Igen', 'SAVENEWTIP'),
+      templates.button('Inkább nem', 'DISCARDNEWTIP')]
+    )
+    callSendAPI(sender_psid, response);
+  }
+  else switch (received_message.text) {
+    
     case 'leiratkozás':
       db.setActive(sender_psid, false);
       let response = templates.buttonMessage(
@@ -15,7 +38,7 @@ const handleMessage = (sender_psid, received_message) => {
       ])
       callSendAPI(sender_psid, response);
       break;
-
+    
     default:
       standardReply(sender_psid, received_message, "Szia, hogy állsz a múltkori kihívással? Mutatom mégegyszer:");
       break;
@@ -25,7 +48,7 @@ const handleMessage = (sender_psid, received_message) => {
 
 const handlePostback = (sender_psid, received_postback) => {
   let response
-
+  
   let payload = received_postback.payload
 
   // Set the response based on the postback payload
@@ -41,13 +64,15 @@ const handlePostback = (sender_psid, received_postback) => {
         'Jöhet az első kihívás?', [
         templates.button('Igen', 'YES')
       ])
+
       break;
 
     case 'DONE':
       response = templates.buttonMessage(
         'Remek! :) Jöhet még egy kihívás?',
         [templates.button('Igen', 'YES'),
-        templates.button('Mára elég ennyi', 'NO')]
+        templates.button('Mára elég ennyi', 'NO'),
+        templates.button('Kihívást írok', 'TIPTITLE')]
       )
       break;
 
@@ -69,6 +94,18 @@ const handlePostback = (sender_psid, received_postback) => {
     case 'ACTIVATE':
       db.setActive(sender_psid, true);
       standardReply(sender_psid, received_postback, 'Örülünk, hogy újra itt vagy! Folytassuk onnan, ahol a múltkor abbahagytuk. Itt is van az első kihívás:')
+      break;
+    
+    case 'TIPTITLE':
+      response =  { "text": 'Add meg a kihívás rövid címét!' };
+      titleAdded = true
+      break;
+    case 'SAVENEWTIP':
+      db.newTip(sender_psid, title, tipDescription)
+      response = { "text": 'A kihívásod mentésre került.' };
+      break;
+    case 'DISCARDNEWTIP':
+      standardReply(sender_psid, received_postback, 'Jöhet még egy kihívás? :)')
       break;
   }
 

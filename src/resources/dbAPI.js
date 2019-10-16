@@ -8,8 +8,25 @@ const newUser = (userId) => {
   db.get('users')
   .push({
     id: userId,
-    seen: [],
-    active: true
+    seen: []
+  })
+  .write()
+}
+
+const resetUserSeen = (userId) =>
+  db.get('users')
+  .find({id: userId})
+  .set('seen', [])
+  .write()
+
+const newTip = (userId, title, desc) => {
+  db.get('tips')
+  .push({
+    id: (db.get('tips').value())[(db.get('tips').value().length)-1]+1,
+    shortTitle: title,
+    longTitle: title,
+    description: desc,
+    addedByUser: userId
   })
   .write()
 }
@@ -85,4 +102,6 @@ module.exports = {
   getNextTipForUser,
   getCurrentTipForUser,
   setActive,
+  newTip,
+  resetUserSeen,
 }

@@ -3,7 +3,7 @@
     {
       "id": 0,
       "shortTitle": "husmentes",
-      "longTitle": "Húsmentes Hétfő",
+      "longTitle": "Húsmentes HÉtfő",
       "description": "Figyelj rá, hogy hétfőnként ne fogyassz hústartalmú ételt! A hazai háztartások ökolábnyomának 42%-át az élelemfogyasztás teszi ki. Ráadásul tudtad, hogy 1 kg hús előállításához átlag 100-szor több vizet használnak föl, mint 1 kg haszonnövény termesztéséhez. Ez azt jelenti, hogy keddenként közel százszor kevesebb vizet használsz el, mint azt egy átlagos napon tennéd."
     },
     {
@@ -40,6 +40,12 @@
       "id": 6,
       "shortTitle": "komposzt",
       "longTitle": "Kezdődhet a komposztálás!",
+      "description": "A szerves hulladékot gyűjtsd külön, kezdj el komposztálni! Ha elégetünk egy kupac avart (ami ugye szerves anyag) 6 óra alatt, az felér 250 busz 24 órás folyamatos közlekedésével. Ugye, hogy inkább komposztáljunk?"
+    },
+    {
+      "id": 7,
+      "shortTitle": "asdasd",
+      "longTitle": "asdasd!",
       "description": "A szerves hulladékot gyűjtsd külön, kezdj el komposztálni! Ha elégetünk egy kupac avart (ami ugye szerves anyag) 6 óra alatt, az felér 250 busz 24 órás folyamatos közlekedésével. Ugye, hogy inkább komposztáljunk?"
     }
   ],
