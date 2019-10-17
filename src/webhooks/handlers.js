@@ -30,7 +30,7 @@ const handlePostback = async (sender_psid, received_postback) => {
 
   // Set the response based on the postback payload
 
-  if (!db.getUser(sender_psid)) {
+  if (!(await db.getUser(sender_psid))) {
     console.log('Creating user' + sender_psid);
     db.newUser(sender_psid);
   }
