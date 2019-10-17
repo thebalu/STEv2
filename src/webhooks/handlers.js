@@ -30,11 +30,14 @@ const handlePostback = async (sender_psid, received_postback) => {
 
   // Set the response based on the postback payload
 
-  if (!(await db.getUser(sender_psid))) {
-    console.log('Creating user' + sender_psid);
-    db.newUser(sender_psid);
+  try {
+    if (!(await db.getUser(sender_psid))) {
+      console.log('Creating user' + sender_psid);
+      db.newUser(sender_psid);
+    }
+  } catch (error) {
+    console.error("Promise rejected" + error)
   }
-
   switch (payload) {
     case 'GET_STARTED':
       response = templates.buttonMessage(
@@ -52,9 +55,12 @@ const handlePostback = async (sender_psid, received_postback) => {
       break;
 
     case 'YES':
-      nextTip = await db.getNextTipForUser(sender_psid);
-      tipText = "*" + nextTip.longTitle + ":* " + nextTip.description + '\n Szólj, ha kész vagy!'
-
+      try {
+        nextTip = await db.getNextTipForUser(sender_psid);
+        tipText = "*" + nextTip.longTitle + ":* " + nextTip.description + '\n Szólj, ha kész vagy!'
+      } catch (error) {
+        console.error("promise rejected " + error)
+      }
       response = templates.buttonMessage(
         tipText,
         [templates.button('Kész vagyok', 'DONE'),
@@ -126,7 +132,11 @@ const callSendAPI = (sender_psid, response, cb = null) => {
 
 const standardReply = async (sender_psid, received_message, before_text) => {
   let response1 = { "text": before_text }
-  currentTip = await db.getCurrentTipForUser(sender_psid);
+  try {
+    currentTip = await db.getCurrentTipForUser(sender_psid);
+  } catch (error) {
+    console.error("Promise rejected" + error);
+  }
   tipText = "*" + currentTip.longTitle + ":* " + currentTip.description + '\n Szólj, ha kész vagy!'
 
   response2 = templates.buttonMessage(
