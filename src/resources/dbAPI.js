@@ -15,6 +15,12 @@ const newUser = (userId) => {
   })
 }
 
+const addUserName = (userId, userFirstName) => {
+  db.collection('users').doc(String(userId)).set({
+    userFirstName: userFirstName
+  })
+}
+
 const getUser = async (userId) => {
   return await db.collection('users').doc(String(userId)).get()
     .then(x => x.data())
@@ -68,5 +74,6 @@ module.exports = {
   getCurrentTipForUser,
   setActive,
   uploadTip,
-  getAllUsers
+  getAllUsers,
+  addUserName
 }

@@ -82,7 +82,7 @@ const handlePostback = async (sender_psid, received_postback) => {
       )
       break;
     case 'NO':
-      response = { "text": 'Ilyet nem csinálhatsz.' + firstGetUserName(sender_psid)+"!" }
+      response = { "text": 'Ilyet nem csinálhatsz!' }
       break;
 
     case 'ACTIVATE':
@@ -185,6 +185,29 @@ const sendInstantMessage = async (req, res) => {
   } else {
     res.status(403).send("You can't do this")
   }
+}
+
+async function firstGetUserName(senderId){
+  var request = require('request');
+
+  var name = "";
+  await request({
+      url: "https://graph.facebook.com/v2.6/" + senderId,
+      qs: {
+        access_token: config.get('Facebook.access_token'),
+        fields: "first_name"
+      },
+      method: "GET"
+    }, function(error, response, body) {
+      if (error) {
+        console.log("Error getting user's name: " +  error);
+      } else {
+        var bodyObj = JSON.parse(body);
+        name = bodyObj.first_name;
+      }
+    });
+  if (name != "")
+    (await db.addUserName(senderId, name))
 }
 
 module.exports = { handleMessage, handlePostback, sendInstantMessage }
