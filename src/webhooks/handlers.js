@@ -158,10 +158,10 @@ const sendInstantMessage = async (req, res) => {
     // users = await db.getAllUsers()
     users = ['2572117989520100', '2707581762588340']
     
-    users.array.forEach(user_id => {
+    users.forEach(user_id => {
       callSendAPI(user_id, body.message, (user_id) => {console.log("Message sent to " + user_id)})
     }); 
-    
+
     res.status(200).send(users)
   } else {
     res.status(403).send("You can't do this")
