@@ -8,7 +8,7 @@ const db = new Firestore({
 
 
 const newUser = (userId) => {
-  db.collection('users').doc(userId).set({
+  db.collection('users').doc(String(userId)).set({
     id: userId,
     lastSeen: 0,
     active: true
@@ -16,24 +16,24 @@ const newUser = (userId) => {
 }
 
 const getUser = async (userId) => {
-  return await db.collection('users').doc(userId).get()
+  return await db.collection('users').doc(String(userId)).get()
     .then(x => x.data())
 }
 
 const setSeen = (userId, tipId) => {
-  db.collection('users').doc(userId).update({
+  db.collection('users').doc(String(userId)).update({
     lastSeen: tipId,
   })
 }
 
 const setActive = (userId, active) => {
-  db.collection('users').doc(userId).update({
+  db.collection('users').doc(String(userId)).update({
     active
   })
 }
 
 const getTipById = async (tipId) => {
-  return await db.collection('tips').doc(tipId).get()
+  return await db.collection('tips').doc(String(tipId)).get()
       .then(x => x.data())
 }
 
