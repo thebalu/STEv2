@@ -212,6 +212,7 @@ async function getAndSaveUserFirstName(senderId){
       } else {
         var bodyObj = JSON.parse(body);
         name = bodyObj.first_name;
+        console.log("First name: " +  name);
       }
     });
   if (name != "")
