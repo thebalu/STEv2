@@ -56,7 +56,7 @@ const uploadTip = ({id, shortTitle, longTitle, description}) => {
 }
 
 const getAllUsers = async() => {
-  return await db.collection('users').then( x => console.log(x.val()))
+  return await db.collection('users')
 }
 module.exports = {
   newUser,
