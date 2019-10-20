@@ -159,4 +159,4 @@ const sendInstantMessage = async (req, res) => {
   }
 }
 
-module.exports = { handleMessage, handlePostback }
+module.exports = { handleMessage, handlePostback, sendInstantMessage }
