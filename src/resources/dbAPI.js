@@ -16,7 +16,7 @@ const newUser = (userId) => {
 }
 
 const addUserName = (userId, userFirstName) => {
-  db.collection('users').doc(String(userId)).set({
+  db.collection('users').doc(String(userId)).update({
     userFirstName: userFirstName
   })
 }
