@@ -213,12 +213,9 @@ async function getAndSaveUserFirstName(senderId){
         var bodyObj = JSON.parse(body);
         name = bodyObj.first_name;
         console.log("First name: " +  name);
+        (await db.addUserName(senderId, name))
       }
     });
-  if (name != ""){
-    console.log("Name is still not null.")
-    (await db.addUserName(senderId, name))
-  }
     
 }
 
