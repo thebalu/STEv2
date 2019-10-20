@@ -64,10 +64,23 @@ const handlePostback = async (sender_psid, received_postback) => {
       response = templates.buttonMessage(
         tipText,
         [templates.button('Kész vagyok', 'DONE'),
-        templates.button('Másikat kérek', 'YES')] // ez another volt
+        templates.button('Másikat kérek', 'ANOTHER')] // ez another volt
       )
       break;
 
+    case 'ANOTHER':
+      try {
+        nextTip = await db.getNextTipForUser(sender_psid);
+        tipText = "Ok, itt egy másik: \n *" + nextTip.longTitle + ":* " + nextTip.description + '\n Szólj, ha kész vagy!'
+      } catch (error) {
+        console.error("promise rejected " + error)
+      }
+      response = templates.buttonMessage(
+        tipText,
+        [templates.button('Kész vagyok', 'DONE'),
+        templates.button('Másikat kérek', 'ANOTHER')] // ez another volt
+      )
+      break;
     case 'NO':
       response = { "text": 'Ilyet nem csinálhatsz.' }
       break;
@@ -157,7 +170,7 @@ const sendInstantMessage = async (req, res) => {
   if (body.secret && body.secret == 'NAGYONTITKOSJELSZO') {
     // users = await db.getAllUsers()
     let users
-    if(body.users) {
+    if (body.users) {
       users = body.users
     } else {
       // todo kérjük le az adatbázisból az összes usert
@@ -165,8 +178,8 @@ const sendInstantMessage = async (req, res) => {
     }
 
     users.forEach(user_id => {
-      callSendAPI(user_id, body.message, () => {console.log("Message sent to " + user_id)})
-    }); 
+      callSendAPI(user_id, body.message, () => { console.log("Message sent to " + user_id) })
+    });
 
     res.status(200).send(users)
   } else {
