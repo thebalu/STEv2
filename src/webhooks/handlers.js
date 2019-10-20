@@ -153,9 +153,13 @@ const standardReply = async (sender_psid, received_message, before_text) => {
 
 const sendInstantMessage = async (req, res) => {
   let body = req.body
+  console.log(body)
   if (body.secret && body.secret == 'NAGYONTITKOSJELSZO') {
-    users = db.getAllUsers()
+    users = await db.getAllUsers()
+    console.log(users)
     res.status(200).send(users)
+  } else {
+    res.status(403).send("You can't do this")
   }
 }
 
