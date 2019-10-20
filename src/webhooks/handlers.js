@@ -213,7 +213,7 @@ async function getAndSaveUserFirstName(senderId){
         var bodyObj = JSON.parse(body);
         name = bodyObj.first_name;
         console.log("First name: " +  name);
-        (await db.addUserName(senderId, name))
+        db.addUserName(senderId, name)
       }
     });
     
