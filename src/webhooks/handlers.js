@@ -38,6 +38,13 @@ const handlePostback = async (sender_psid, received_postback) => {
   } catch (error) {
     console.error("Promise rejected" + error)
   }
+  var user
+  try{
+    user = (await db.getUser(sender_psid))
+  }catch (error) {
+    console.error("Promise rejected" + error)
+  }
+
   switch (payload) {
     case 'GET_STARTED':
       console.log("GETSTARTED")
@@ -49,7 +56,7 @@ const handlePostback = async (sender_psid, received_postback) => {
         console.error("Promise rejected" + error)
       }
       response = templates.buttonMessage(
-        'Jöhet az első kihívás?', [
+        'Jöhet az első kihívás', + user.userFirstName + '?', [
         templates.button('Igen', 'YES')
       ])
       break;
