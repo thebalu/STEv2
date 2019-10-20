@@ -56,14 +56,14 @@ const handlePostback = async (sender_psid, received_postback) => {
         console.error("Promise rejected" + error)
       }
       response = templates.buttonMessage(
-        'Jöhet az első kihívás' + user.userFirstName + '?', [
+        'Jöhet az első kihívás, ' + user.userFirstName + '?', [
         templates.button('Igen', 'YES')
       ])
       break;
 
     case 'DONE':
       response = templates.buttonMessage(
-        'Remek! :) Jöhet még egy kihívás?',
+        'Remek, ' + user.userFirstName + '! :) Jöhet még egy kihívás?',
         [templates.button('Igen', 'YES'),
         templates.button('Mára elég ennyi', 'NO')]
       )
@@ -97,12 +97,12 @@ const handlePostback = async (sender_psid, received_postback) => {
       )
       break;
     case 'NO':
-      response = { "text": 'Ilyet nem csinálhatsz!' }
+      response = { "text": 'Ilyet nem csinálhatsz, ' + user.userFirstName +'! Várunk vissza!' }
       break;
 
     case 'ACTIVATE':
       db.setActive(sender_psid, true);
-      standardReply(sender_psid, received_postback, 'Örülünk, hogy újra itt vagy! Folytassuk onnan, ahol a múltkor abbahagytuk. Itt is van az első kihívás:')
+      standardReply(sender_psid, received_postback, 'Örülünk, hogy újra itt vagy, '+ user.userFirstName +'! Folytassuk onnan, ahol a múltkor abbahagytuk. Itt is van az első kihívás:')
       break;
   }
 
