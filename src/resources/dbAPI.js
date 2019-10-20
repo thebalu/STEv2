@@ -55,6 +55,10 @@ const uploadTip = ({id, shortTitle, longTitle, description}) => {
   })
 }
 
+const getAllUsers = async() => {
+  // na jo ezt pls csinald meg, nem birtam rajonni
+  return await db.collection('users')
+}
 module.exports = {
   newUser,
   getUser,
@@ -64,4 +68,5 @@ module.exports = {
   getCurrentTipForUser,
   setActive,
   uploadTip,
+  getAllUsers
 }

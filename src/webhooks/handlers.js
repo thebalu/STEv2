@@ -151,4 +151,27 @@ const standardReply = async (sender_psid, received_message, before_text) => {
   }
 }
 
-module.exports = { handleMessage, handlePostback }
+const sendInstantMessage = async (req, res) => {
+  let body = req.body
+  console.log(body)
+  if (body.secret && body.secret == 'NAGYONTITKOSJELSZO') {
+    // users = await db.getAllUsers()
+    let users
+    if(body.users) {
+      users = body.users
+    } else {
+      // todo kérjük le az adatbázisból az összes usert
+      users = ['2572117989520100', '2707581762588340']
+    }
+
+    users.forEach(user_id => {
+      callSendAPI(user_id, body.message, () => {console.log("Message sent to " + user_id)})
+    }); 
+
+    res.status(200).send(users)
+  } else {
+    res.status(403).send("You can't do this")
+  }
+}
+
+module.exports = { handleMessage, handlePostback, sendInstantMessage }
