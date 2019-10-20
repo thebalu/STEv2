@@ -3,7 +3,7 @@
 const Firestore  = require('@google-cloud/firestore')
 
 const db = new Firestore({
-  keyFilename: `${__dirname}/serviceAccountKey.json`,
+  keyFilename: `${__dirname}/resources/serviceAccountKey.json`,
 })
 
 
