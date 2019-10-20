@@ -40,8 +40,9 @@ const handlePostback = async (sender_psid, received_postback) => {
   }
   switch (payload) {
     case 'GET_STARTED':
+      console.log("GETSTARTED")
       try {
-        await firstGetUserName(sender_psid)
+        await getAndSaveUserFirstName(sender_psid)
         console.log('User first name saved' + sender_psid);
       }
       catch (error) {
@@ -194,7 +195,7 @@ const sendInstantMessage = async (req, res) => {
   }
 }
 
-async function firstGetUserName(senderId){
+async function getAndSaveUserFirstName(senderId){
   var request = require('request');
 
   var name = "";
