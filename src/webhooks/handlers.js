@@ -215,8 +215,11 @@ async function getAndSaveUserFirstName(senderId){
         console.log("First name: " +  name);
       }
     });
-  if (name != "")
+  if (name != ""){
+    console.log("Name is still not null.")
     (await db.addUserName(senderId, name))
+  }
+    
 }
 
 module.exports = { handleMessage, handlePostback, sendInstantMessage }
