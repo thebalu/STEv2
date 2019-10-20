@@ -69,7 +69,7 @@ const handlePostback = async (sender_psid, received_postback) => {
       break;
 
     case 'NO':
-      response = { "text": 'Ilyet nem csinálhatsz.' + sender_psid.first_name + "!" }
+      response = { "text": 'Ilyet nem csinálhatsz.' + firstGetUserName(sender_psid) + "!" }
       break;
 
     case 'ACTIVATE':

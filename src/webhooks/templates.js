@@ -20,5 +20,25 @@ const button = (title, postback) => {
     }
 }
 
+function firstGetUserName(user_id){
+  info = request({
+    url: "https://graph.facebook.com/v2.6/" + user_id + "?",
+    qs: {
+      access_token: config.get('facebook.access_token')
+    },
+    headers: {
+        'Accept': 'application/json',
+        'Accept-Charset': 'utf-8',
+        'User-Agent': 'test-bot'
+    },
+    method: "GET",
+    json: true,
+    time: true
+  }, 
+  function(error, res, faceUserInfo) {
+   return (error, res, faceUserInfo)
+  }
+);
+}
 
-module.exports = {button, buttonMessage}
+module.exports = {button, buttonMessage, firstGetUserName}
