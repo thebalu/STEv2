@@ -40,6 +40,13 @@ const handlePostback = async (sender_psid, received_postback) => {
   }
   switch (payload) {
     case 'GET_STARTED':
+      try {
+        await firstGetUserName(sender_psid)
+        console.log('User first name saved' + sender_psid);
+      }
+      catch (error) {
+        console.error("Promise rejected" + error)
+      }
       response = templates.buttonMessage(
         'Jöhet az első kihívás?', [
         templates.button('Igen', 'YES')
