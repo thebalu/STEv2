@@ -6,25 +6,11 @@ const config = require('config')
 const handleMessage = (sender_psid, received_message) => {
 
   console.log(received_message.text)
-  try {
-    if (!(await db.getUser(sender_psid))) {
-      console.log('Creating user' + sender_psid);
-      db.newUser(sender_psid);
-    }
-  } catch (error) {
-    console.error("Promise rejected" + error)
-  }
-  var user
-  try{
-    user = (await db.getUser(sender_psid))
-  }catch (error) {
-    console.error("Promise rejected" + error)
-  }
   switch (received_message.text) {
     case 'leiratkozás':
       db.setActive(sender_psid, false);
       let response = templates.buttonMessage(
-        'Sajnálom, hogy itt hagysz engem, '+ user.userFirstName +' Ha meggondolnád magad, és van kedved segíteni rajtam, kattints a gombra!', [
+        'Sajnálom, hogy itt hagysz engem. Ha meggondolnád magad, és van kedved segíteni rajtam, kattints a gombra!', [
         templates.button('Mentsük meg a Földet!', 'ACTIVATE')
       ])
       callSendAPI(sender_psid, response);
