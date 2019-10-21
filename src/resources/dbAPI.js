@@ -64,8 +64,15 @@ const uploadTip = ({id, shortTitle, longTitle, description}) => {
 }
 
 const getAllUsers = async() => {
+  const users = []
+  await db.collection('users').get()
+    .then(snapshot => {
+      snapshot.forEach(doc => {
+        users.push(doc.id)
+      })
+    })
   
-  return await db.collection('users')
+  return users
 }
 
 
