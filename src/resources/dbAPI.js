@@ -45,7 +45,9 @@ const getTipById = async (tipId) => {
 
 const getNextTipForUser = async(userId) => {
   const {lastSeen} = await getUser(userId)
-  return await getTipById(lastSeen+1)
+  const nextTip = await getTipById(lastSeen+1)
+  setSeen(userId, lastSeen+1)
+  return nextTip
 }
 
 const getCurrentTipForUser = async (userId) => {
@@ -62,9 +64,11 @@ const uploadTip = ({id, shortTitle, longTitle, description}) => {
 }
 
 const getAllUsers = async() => {
-  // na jo ezt pls csinald meg, nem birtam rajonni
+  
   return await db.collection('users')
 }
+
+
 module.exports = {
   newUser,
   getUser,
