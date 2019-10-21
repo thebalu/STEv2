@@ -64,7 +64,7 @@ const handlePostback = async (sender_psid, received_postback) => {
       break;
     case 'HELP':
       response = templates.buttonMessage(
-        'Tehát, én nevem Earthy, és én vagyok a bolygó, amin élsz. Sajnos az utóbbi időben Ti, emberek nagyon elhanyagoltok engem, rosszul érzem magam, és az állapotom lassan visszafordíthatatlanná válik. :( ' + 
+        'Tehát, a nevem Earthy, és én vagyok a bolygó, amin élsz. Sajnos az utóbbi időben Ti, emberek nagyon elhanyagoltok engem, rosszul érzem magam, és az állapotom lassan visszafordíthatatlanná válik. :( ' + 
         'Tudod ' + user.userFirstName + ", az a legszomorúbb, hogy a legtöbb ember azt hiszi, nem tehet semmmit. Pedig ha összefogtok, a sok kicsi dolog csodákra képes! :) Készen állsz, hogy megmutassam, hogyan?", [
         templates.button('Igen', 'YES')
       ])
