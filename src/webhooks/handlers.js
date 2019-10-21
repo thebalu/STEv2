@@ -6,12 +6,25 @@ const config = require('config')
 const handleMessage = (sender_psid, received_message) => {
 
   console.log(received_message.text)
+  try {
+    if (!(await db.getUser(sender_psid))) {
+      console.log('Creating user' + sender_psid);
+      db.newUser(sender_psid);
+    }
+  } catch (error) {
+    console.error("Promise rejected" + error)
+  }
   var user
+  try{
+    user = (await db.getUser(sender_psid))
+  }catch (error) {
+    console.error("Promise rejected" + error)
+  }
   switch (received_message.text) {
     case 'leiratkozás':
       db.setActive(sender_psid, false);
       let response = templates.buttonMessage(
-        'Sajnálom, hogy itt hagysz engem. Ha meggondolnád magad, és van kedved segíteni rajtam, kattints a gombra!', [
+        'Sajnálom, hogy itt hagysz engem, '+ user.userFirstName +' Ha meggondolnád magad, és van kedved segíteni rajtam, kattints a gombra!', [
         templates.button('Mentsük meg a Földet!', 'ACTIVATE')
       ])
       callSendAPI(sender_psid, response);
@@ -65,7 +78,7 @@ const handlePostback = async (sender_psid, received_postback) => {
       break;
     case 'HELP':
       response = templates.buttonMessage(
-        'Tehát, én nevem Earthy, és én vagyok a bolygó, amin élsz. Sajnos az utóbbi időben Ti, emberek nagyon elhanyagoltok engem, rosszul érzem magam, és az állapotom lassan visszafordíthatatlanná válni. :( ' + 
+        'Tehát, én nevem Earthy, és én vagyok a bolygó, amin élsz. Sajnos az utóbbi időben Ti, emberek nagyon elhanyagoltok engem, rosszul érzem magam, és az állapotom lassan visszafordíthatatlanná válik. :( ' + 
         'Tudod ' + user.userFirstName + ", az a legszomorúbb, hogy a legtöbb ember azt hiszi, nem tehet semmmit. Pedig ha összefogtok, a sok kicsi dolog csodákra képes! :) Készen állsz, hogy megmutassam, hogyan?", [
         templates.button('Igen', 'YES')
       ])
@@ -73,7 +86,7 @@ const handlePostback = async (sender_psid, received_postback) => {
     case 'DONE':
       response = templates.buttonMessage(
         'Remek, ' + user.userFirstName + '! :) Jöhet még egy kihívás?',
-        [templates.button('Igen', 'YES'),
+        [templates.button('Igen! :)', 'YES'),
         templates.button('Mára elég ennyi', 'NO')]
       )
       break;
@@ -87,7 +100,7 @@ const handlePostback = async (sender_psid, received_postback) => {
       }
       response = templates.buttonMessage(
         tipText,
-        [templates.button('Kész vagyok', 'DONE'),
+        [templates.button('Kész vagyok! :)', 'DONE'),
         templates.button('Másikat kérek', 'ANOTHER')] // ez another volt
       )
       break;
