@@ -6,18 +6,24 @@ const config = require('config')
 const handleMessage = (sender_psid, received_message) => {
 
   console.log(received_message.text)
+  var user
+  try{
+    user = (await db.getUser(sender_psid))
+  }catch (error) {
+    console.error("Promise rejected" + error)
+  }
   switch (received_message.text) {
     case 'leiratkozás':
       db.setActive(sender_psid, false);
       let response = templates.buttonMessage(
-        'Sajnáljuk, hogy itt hagysz minket. Ha meggondolnád magad, és folytatnád a Föld megmentését, kattints a gombra.', [
+        'Sajnálom, hogy itt hagysz engem, '+ user.userFirstName +'. Ha meggondolnád magad, és van kedved segíteni rajtam, kattints a gombra!', [
         templates.button('Mentsük meg a Földet!', 'ACTIVATE')
       ])
       callSendAPI(sender_psid, response);
       break;
 
     default:
-      standardReply(sender_psid, received_message, "Szia, hogy állsz a múltkori kihívással? Mutatom mégegyszer:");
+      standardReply(sender_psid, received_message, "Szia, " + user.userFirstName + " hogy állsz a múltkori kihívással? Mutatom mégegyszer:");
       break;
   }
 
@@ -56,11 +62,19 @@ const handlePostback = async (sender_psid, received_postback) => {
         console.error("Promise rejected" + error)
       }
       response = templates.buttonMessage(
-        'Jöhet az első kihívás, ' + user.userFirstName + '?', [
+        'Szia ' + user.userFirstName + '! Az én nevem Earthy, és megmutatom, hogy segíthetsz rajtam. Jöhet az első feladat? :)', [
+        [templates.button('Igen', 'YES'),
+         templates.button('Mesélj magadról!', 'HELP')
+        ]
+      ])
+      break;
+    case 'HELP':
+      response = templates.buttonMessage(
+        'Tehát, én nevem Earthy, és én vagyok a bolygó, amin élsz. Sajnos az utóbbi időben Ti, emberek nagyon elhanyagoltok engem, rosszul érzem magam, és az állapotom lassan visszafordíthatatlanná válni. :( ' + 
+        'Tudod ' + user.userFirstName + ", az a legszomorúbb, hogy a legtöbb ember azt hiszi, nem tehet semmmit. Pedig ha összefogtok, a sok kicsi dolog csodákra képes! :) Készen állsz, hogy megmutassam, hogyan?", [
         templates.button('Igen', 'YES')
       ])
       break;
-
     case 'DONE':
       response = templates.buttonMessage(
         'Remek, ' + user.userFirstName + '! :) Jöhet még egy kihívás?',
@@ -86,7 +100,7 @@ const handlePostback = async (sender_psid, received_postback) => {
     case 'ANOTHER':
       try {
         nextTip = await db.getNextTipForUser(sender_psid);
-        tipText = "Ok, itt egy másik: \n *" + nextTip.longTitle + ":* " + nextTip.description + '\n Szólj, ha kész vagy!'
+        tipText = "Rendben, itt egy másik: \n *" + nextTip.longTitle + ":* " + nextTip.description + '\n Szólj, ha kész vagy!'
       } catch (error) {
         console.error("promise rejected " + error)
       }
@@ -97,12 +111,12 @@ const handlePostback = async (sender_psid, received_postback) => {
       )
       break;
     case 'NO':
-      response = { "text": 'Ilyet nem csinálhatsz, ' + user.userFirstName +'! Várunk vissza!' }
+      response = { "text": 'Sajnálom, ' + user.userFirstName +'. Várlak vissza! :)' }
       break;
 
     case 'ACTIVATE':
       db.setActive(sender_psid, true);
-      standardReply(sender_psid, received_postback, 'Örülünk, hogy újra itt vagy, '+ user.userFirstName +'! Folytassuk onnan, ahol a múltkor abbahagytuk. Itt is van az első kihívás:')
+      standardReply(sender_psid, received_postback, 'Örülök, hogy újra itt vagy, '+ user.userFirstName +'! Folytassuk onnan, ahol a múltkor abbahagytuk. Itt is van a következő kihívás:')
       break;
   }
 
