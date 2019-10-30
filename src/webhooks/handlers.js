@@ -233,6 +233,13 @@ async function getAndSaveUserFirstName(senderId){
     
 }
 
+var templateType = {
+  "yes": 0,
+  "finished": 1,
+  "good": 2,
+  "readyForAnother": 3
+};
+
 async function generateString(s){
   
   list = (await db.getStringTemplate(templateType.s)).variations
@@ -240,11 +247,6 @@ async function generateString(s){
   return ((list[Math.floor(Math.random() * (l))]))
 }
 
-var templateType = {
-  "yes": 0,
-  "finished": 1,
-  "good": 2,
-  "readyForAnother": 3
-};
+
 
 module.exports = { handleMessage, handlePostback, sendInstantMessage }
