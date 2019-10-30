@@ -4,7 +4,6 @@ const request = require('request')
 const config = require('config')
 
 const handleMessage = (sender_psid, received_message) => {
-  generateYes();
   console.log(received_message.text)
   switch (received_message.text) {
     case 'leiratkozás':
@@ -57,7 +56,7 @@ const handlePostback = async (sender_psid, received_postback) => {
       }
       response = templates.buttonMessage(
         'Szia ' + user.userFirstName + '! Az én nevem Earthy, és megmutatom, hogy segíthetsz rajtam. Jöhet az első feladat? :)', [
-        templates.button('Igen', 'YES'),
+        templates.button(generateYes(), 'YES'),
         templates.button('Mesélj magadról!', 'HELP')
         
       ])
@@ -237,7 +236,8 @@ async function getAndSaveUserFirstName(senderId){
 async function generateYes(){
   console.log("YESES:")
   list = (await db.getYes()).variations
-  console.log(list)
+  l = list.length
+  return (list[Math.floor(Math.random() * (l))])
 }
 
 module.exports = { handleMessage, handlePostback, sendInstantMessage }
