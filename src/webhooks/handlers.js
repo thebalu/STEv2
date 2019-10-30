@@ -66,13 +66,13 @@ const handlePostback = async (sender_psid, received_postback) => {
       response = templates.buttonMessage(
         'Tehát, a nevem Earthy, és én vagyok a bolygó, amin élsz. Sajnos az utóbbi időben Ti, emberek nagyon elhanyagoltok engem, rosszul érzem magam, és az állapotom lassan visszafordíthatatlanná válik. :( ' + 
         'Tudod ' + user.userFirstName + ", az a legszomorúbb, hogy a legtöbb ember azt hiszi, nem tehet semmmit. Pedig ha összefogtok, a sok kicsi dolog csodákra képes! :) Készen állsz, hogy megmutassam, hogyan?", [
-        templates.button('Igen', 'YES')
+        templates.button((await (generateYes())), 'YES')
       ])
       break;
     case 'DONE':
       response = templates.buttonMessage(
         'Remek, ' + user.userFirstName + '! :) Jöhet még egy kihívás?',
-        [templates.button('Igen! :)', 'YES'),
+        [templates.button((await(generateYes())), 'YES'),
         templates.button('Mára elég ennyi', 'NO')]
       )
       break;
