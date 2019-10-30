@@ -234,4 +234,9 @@ async function getAndSaveUserFirstName(senderId){
     
 }
 
+async function generateYes(){
+  list = db.getYes()["variations"]
+  console.log(list)
+}
+
 module.exports = { handleMessage, handlePostback, sendInstantMessage }
