@@ -40,11 +40,9 @@ const handlePostback = async (sender_psid, received_postback) => {
     console.error("Promise rejected" + error)
   }
   var user
-  try{
-    user = (await db.getUser(sender_psid))
-  }catch (error) {
-    console.error("Promise rejected" + error)
-  }
+  
+  user = (await db.getUser(sender_psid))
+  
 
   switch (payload) {
     case 'GET_STARTED':
