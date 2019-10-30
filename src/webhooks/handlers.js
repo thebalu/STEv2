@@ -3,13 +3,6 @@ const db = require('../resources/dbAPI')
 const request = require('request')
 const config = require('config')
 
-const generateString = async (s) => {
-  
-  var list = (await db.getStringTemplate(templateType[s])).variations 
-  var l = list.length
-  return ((list[Math.floor(Math.random() * (l))]))
-}
-
 const handleMessage = (sender_psid, received_message) => {
   console.log(received_message.text)
   switch (received_message.text) {
@@ -216,9 +209,10 @@ async function getAndSaveUserFirstName(senderId){
         const bodyObj = JSON.parse(body);
         name = bodyObj.first_name;
         console.log("First name: " +  name);
-        db.addUserName(senderId, name)
+        
       }
     });
+    await db.addUserName(senderId, name);
     
 }
 
@@ -231,6 +225,11 @@ var templateType = {
   "exclamation": "5"
 };
 
-
+const generateString = async (s) => {
+  
+  var list = (await db.getStringTemplate(templateType[s])).variations 
+  var l = list.length
+  return ((list[Math.floor(Math.random() * (l))]))
+}
 
 module.exports = { handleMessage, handlePostback, sendInstantMessage }
