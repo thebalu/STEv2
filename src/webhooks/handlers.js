@@ -64,7 +64,7 @@ const handlePostback = async (sender_psid, received_postback) => {
       }
       response = templates.buttonMessage(
         'Szia ' + user.userFirstName + '! Az én nevem Earthy, és megmutatom, hogy segíthetsz rajtam. Jöhet az első feladat? :)', [
-        templates.button((await(generateString("yes"))) + (await generateString("exclamation")), 'YES'),
+        templates.button((await(generateString("yes"))) + (await generateString("exclamation")) + (await generateString("smiley")), 'YES'),
         templates.button('Mesélj magadról!', 'HELP')
         
       ])
@@ -79,7 +79,7 @@ const handlePostback = async (sender_psid, received_postback) => {
     case 'DONE':
       response = templates.buttonMessage(
         (await generateString("good")) + ', ' + user.userFirstName + '! '+ (await generateString("smiley")) +' ' + (await generateString("readyForAnother")),
-        [templates.button((await(generateString("yes"))) + (await generateString("exclamation")), 'YES'),
+        [templates.button((await(generateString("yes"))) + (await generateString("exclamation")) + (await generateString("smiley")), 'YES'),
         templates.button('Mára elég ennyi', 'NO')]
       )
       break;
@@ -93,7 +93,7 @@ const handlePostback = async (sender_psid, received_postback) => {
       }
       response = templates.buttonMessage(
         tipText,
-        [templates.button((await generateString("finished")), 'DONE'),
+        [templates.button((await generateString("finished")) + (await generateString("exclamation")) + (await generateString("smiley")), 'DONE'),
         templates.button('Másikat kérek', 'ANOTHER')] // ez another volt
       )
       break;
