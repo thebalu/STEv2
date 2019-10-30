@@ -192,10 +192,10 @@ const sendInstantMessage = async (req, res) => {
 }
 
 async function getAndSaveUserFirstName(senderId){
-  const request = require('request');
+  var request = require('request');
 
-  let name = "";
-  await getName({
+  var name = "";
+  await request({
       url: "https://graph.facebook.com/v2.6/" + senderId,
       qs: {
         access_token: config.get('Facebook.access_token'),
@@ -206,13 +206,12 @@ async function getAndSaveUserFirstName(senderId){
       if (error) {
         console.log("Error getting user's name: " +  error);
       } else {
-        const bodyObj = JSON.parse(body);
+        var bodyObj = JSON.parse(body);
         name = bodyObj.first_name;
         console.log("First name: " +  name);
-        
+        db.addUserName(senderId, name)
       }
     });
-    await db.addUserName(senderId, name);
     
 }
 
