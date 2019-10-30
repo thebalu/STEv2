@@ -16,7 +16,7 @@ const handleMessage = (sender_psid, received_message) => {
       break;
 
     default:
-      standardReply(sender_psid, received_message, "Szia! "+ (await generateString("smiley")) +" Hogy állsz a múltkori kihívással? Mutatom mégegyszer:");
+      standardReply(sender_psid, received_message, ("Szia! " + (await generateString("smiley")) +" Hogy állsz a múltkori kihívással? Mutatom mégegyszer:"));
       break;
   }
 
