@@ -51,6 +51,7 @@ const handlePostback = async (sender_psid, received_postback) => {
       try {
         await getAndSaveUserFirstName(sender_psid)
         console.log('User first name saved' + sender_psid);
+        user = (await db.getUser(sender_psid))
       }
       catch (error) {
         console.error("Promise rejected" + error)
