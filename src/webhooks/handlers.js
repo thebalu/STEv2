@@ -225,7 +225,7 @@ var templateType = {
   "exclamation": "5"
 };
 
-async function generateString(s){
+const generateString = async (s) => {
   
   list = (await db.getStringTemplate(templateType[s])).variations 
   l = list.length
