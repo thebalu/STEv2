@@ -75,8 +75,8 @@ const getAllUsers = async() => {
   return users
 }
 
-const getStringTemplate = async (number) => {
-  return await db.collection('templateStrings').doc(String(number)).get()
+const getStringTemplate = async (id) => {
+  return await db.collection('templateStrings').doc(String(id)).get()
     .then(x => x.data())
 }
 

@@ -70,7 +70,7 @@ const handlePostback = async (sender_psid, received_postback) => {
       break;
     case 'DONE':
       response = templates.buttonMessage(
-        'Remek, ' + user.userFirstName + '! :) Jöhet még egy kihívás?',
+        (await generateString("good")) + ', ' + user.userFirstName + '! :) ' + (await generateString("readyForAnother")),
         [templates.button((await(generateString("yes"))), 'YES'),
         templates.button('Mára elég ennyi', 'NO')]
       )
@@ -85,7 +85,7 @@ const handlePostback = async (sender_psid, received_postback) => {
       }
       response = templates.buttonMessage(
         tipText,
-        [templates.button('Kész vagyok! :)', 'DONE'),
+        [templates.button((await generateString("finished")), 'DONE'),
         templates.button('Másikat kérek', 'ANOTHER')] // ez another volt
       )
       break;
@@ -99,7 +99,7 @@ const handlePostback = async (sender_psid, received_postback) => {
       }
       response = templates.buttonMessage(
         tipText,
-        [templates.button('Kész vagyok', 'DONE'),
+        [templates.button((await generateString("finished")), 'DONE'),
         templates.button('Másikat kérek', 'ANOTHER')] // ez another volt
       )
       break;
@@ -176,7 +176,7 @@ const standardReply = async (sender_psid, received_message, before_text) => {
 
   response2 = templates.buttonMessage(
     tipText,
-    [templates.button('Kész vagyok', 'DONE'),
+    [templates.button((await generateString("finished")), 'DONE'),
     templates.button('Másikat kérek', 'YES')] // ez another volt
   )
 
@@ -234,15 +234,15 @@ async function getAndSaveUserFirstName(senderId){
 }
 
 var templateType = {
-  "yes": 0,
-  "finished": 1,
-  "good": 2,
-  "readyForAnother": 3
+  "yes": "0",
+  "finished": "1",
+  "good": "2",
+  "readyForAnother": "3"
 };
 
 async function generateString(s){
   
-  list = (await db.getStringTemplate(templateType.s)).variations
+  list = (await db.getStringTemplate(templateType[s])).variations
   l = list.length
   return ((list[Math.floor(Math.random() * (l))]))
 }
