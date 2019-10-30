@@ -33,7 +33,8 @@ const handlePostback = async (sender_psid, received_postback) => {
   try {
     if (!(await db.getUser(sender_psid))) {
       console.log('Creating user' + sender_psid);
-      db.newUser(sender_psid);
+      await db.newUser(sender_psid);
+      await getAndSaveUserFirstName(sender_psid)
     }
   } catch (error) {
     console.error("Promise rejected" + error)
@@ -48,15 +49,6 @@ const handlePostback = async (sender_psid, received_postback) => {
   switch (payload) {
     case 'GET_STARTED':
       console.log("GETSTARTED")
-      try {
-        await getAndSaveUserFirstName(sender_psid)
-        console.log('User first name saved' + sender_psid);
-        
-      }
-      catch (error) {
-        console.error("Promise rejected" + error)
-      }
-      user = (await db.getUser(sender_psid))
       response = templates.buttonMessage(
         'Szia ' + user.userFirstName + '! Az én nevem Earthy, és megmutatom, hogy segíthetsz rajtam. Jöhet az első feladat? :)', [
         templates.button((await(generateString("yes"))) + (await generateString("exclamation")) + " " + (await generateString("smiley")), 'YES'),

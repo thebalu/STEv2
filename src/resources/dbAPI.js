@@ -7,7 +7,7 @@ const db = new Firestore({
 })
 
 
-const newUser = (userId) => {
+const newUser = async (userId) => {
   db.collection('users').doc(String(userId)).set({
     id: userId,
     lastSeen: 0,
@@ -15,7 +15,7 @@ const newUser = (userId) => {
   })
 }
 
-const addUserName = (userId, userFirstName) => {
+const addUserName = async (userId, userFirstName) => {
   db.collection('users').doc(String(userId)).update({
     userFirstName: userFirstName
   })
