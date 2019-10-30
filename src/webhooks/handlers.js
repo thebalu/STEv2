@@ -23,7 +23,7 @@ const handleMessage = (sender_psid, received_message) => {
       break;
 
     default:
-      smiley = await generateString("smiley")
+      smiley = (await generateString("smiley"))
       standardReply(sender_psid, received_message, ("Szia! " + smiley +" Hogy állsz a múltkori kihívással? Mutatom mégegyszer:"));
       break;
   }
