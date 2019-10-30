@@ -3,6 +3,8 @@ const db = require('../resources/dbAPI')
 const request = require('request')
 const config = require('config')
 
+generateString(s);
+
 const handleMessage = (sender_psid, received_message) => {
   console.log(received_message.text)
   switch (received_message.text) {
@@ -232,4 +234,4 @@ async function generateString(s){
 
 
 
-module.exports = { handleMessage, handlePostback, sendInstantMessage, generateString }
+module.exports = { handleMessage, handlePostback, sendInstantMessage }
