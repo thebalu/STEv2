@@ -236,7 +236,7 @@ async function getAndSaveUserFirstName(senderId){
 
 async function generateYes(){
   console.log("YESES:")
-  list = db.getYes().variations
+  list = (await db.getYes()).variations
   console.log(list)
 }
 
