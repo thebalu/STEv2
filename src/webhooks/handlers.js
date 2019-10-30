@@ -51,11 +51,12 @@ const handlePostback = async (sender_psid, received_postback) => {
       try {
         await getAndSaveUserFirstName(sender_psid)
         console.log('User first name saved' + sender_psid);
-        user = (await db.getUser(sender_psid))
+        
       }
       catch (error) {
         console.error("Promise rejected" + error)
       }
+      user = (await db.getUser(sender_psid))
       response = templates.buttonMessage(
         'Szia ' + user.userFirstName + '! Az én nevem Earthy, és megmutatom, hogy segíthetsz rajtam. Jöhet az első feladat? :)', [
         templates.button((await(generateString("yes"))) + (await generateString("exclamation")) + " " + (await generateString("smiley")), 'YES'),
