@@ -49,8 +49,9 @@ const handlePostback = async (sender_psid, received_postback) => {
   switch (payload) {
     case 'GET_STARTED':
       console.log("GETSTARTED")
+      console.log(user.userFirstName)
       response = templates.buttonMessage(
-        'Szia ' + name + '! Az én nevem Earthy, és megmutatom, hogy segíthetsz rajtam. Jöhet az első feladat? :)', [
+        'Szia ' + user.userFirstName + '! Az én nevem Earthy, és megmutatom, hogy segíthetsz rajtam. Jöhet az első feladat? :)', [
         templates.button((await(generateString("yes"))) + (await generateString("exclamation")) + " " + (await generateString("smiley")), 'YES'),
         templates.button('Mesélj magadról!', 'HELP')
         
