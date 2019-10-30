@@ -115,25 +115,6 @@ const handlePostback = async (sender_psid, received_postback) => {
 
   callSendAPI(sender_psid, response)
 
-
-
-  // if (payload === 'GET_STARTED') {
-  //   response = templates.buttonMessage(
-  //     'Jöhet az első kihívás?', [
-  //       templates.button('Igen','YES')
-  //   ])
-
-
-
-  // } else if (payload === 'DONE') {
-  //   response = areYouReadyToTheNextOneTemplate('Remek! :) Jöhet még egy kihívás?')
-  //   callSendAPI(sender_psid, response)
-  // } else if (payload === 'YES' || payload === 'ANOTHER') {
-  //   response = missionTemplate(getMissionDescription() + "\n Szólj, ha kész vagy!")
-  //   callSendAPI(sender_psid, response)
-  // } else if (payload === 'NO') {
-  //   setTimeout(dailyFirst, 5000, sender_psid)
-  // }
 }
 
 const callSendAPI = (sender_psid, response, cb = null) => {
@@ -242,7 +223,7 @@ var templateType = {
 
 async function generateString(s){
   
-  list = (await db.getStringTemplate(templateType[s])).variations
+  list = (await db.getStringTemplate(templateType[s])).variations 
   l = list.length
   return ((list[Math.floor(Math.random() * (l))]))
 }
