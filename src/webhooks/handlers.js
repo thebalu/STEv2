@@ -3,7 +3,12 @@ const db = require('../resources/dbAPI')
 const request = require('request')
 const config = require('config')
 
-generateString(s);
+const generateString = async (s) => {
+  
+  list = (await db.getStringTemplate(templateType[s])).variations 
+  l = list.length
+  return ((list[Math.floor(Math.random() * (l))]))
+}
 
 const handleMessage = (sender_psid, received_message) => {
   console.log(received_message.text)
@@ -224,13 +229,6 @@ var templateType = {
   "smiley": "4",
   "exclamation": "5"
 };
-
-const generateString = async (s) => {
-  
-  list = (await db.getStringTemplate(templateType[s])).variations 
-  l = list.length
-  return ((list[Math.floor(Math.random() * (l))]))
-}
 
 
 
