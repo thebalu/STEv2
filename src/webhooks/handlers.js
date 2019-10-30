@@ -4,7 +4,6 @@ const request = require('request')
 const config = require('config')
 
 const handleMessage = (sender_psid, received_message) => {
-  generateYes()
   console.log(received_message.text)
   switch (received_message.text) {
     case 'leiratkozás':
@@ -57,7 +56,7 @@ const handlePostback = async (sender_psid, received_postback) => {
       }
       response = templates.buttonMessage(
         'Szia ' + user.userFirstName + '! Az én nevem Earthy, és megmutatom, hogy segíthetsz rajtam. Jöhet az első feladat? :)', [
-        templates.button((await(generateYes())), 'YES'),
+        templates.button((await(generateString("yes"))), 'YES'),
         templates.button('Mesélj magadról!', 'HELP')
         
       ])
@@ -66,13 +65,13 @@ const handlePostback = async (sender_psid, received_postback) => {
       response = templates.buttonMessage(
         'Tehát, a nevem Earthy, és én vagyok a bolygó, amin élsz. Sajnos az utóbbi időben Ti, emberek nagyon elhanyagoltok engem, rosszul érzem magam, és az állapotom lassan visszafordíthatatlanná válik. :( ' + 
         'Tudod ' + user.userFirstName + ", az a legszomorúbb, hogy a legtöbb ember azt hiszi, nem tehet semmmit. Pedig ha összefogtok, a sok kicsi dolog csodákra képes! :) Készen állsz, hogy megmutassam, hogyan?", [
-        templates.button((await (generateYes())), 'YES')
+        templates.button((await (generateString("yes"))), 'YES')
       ])
       break;
     case 'DONE':
       response = templates.buttonMessage(
         'Remek, ' + user.userFirstName + '! :) Jöhet még egy kihívás?',
-        [templates.button((await(generateYes())), 'YES'),
+        [templates.button((await(generateString("yes"))), 'YES'),
         templates.button('Mára elég ennyi', 'NO')]
       )
       break;
@@ -234,11 +233,18 @@ async function getAndSaveUserFirstName(senderId){
     
 }
 
-async function generateYes(){
-  console.log("YESES:")
-  list = (await db.getYes()).variations
+async function generateString(s){
+  
+  list = (await db.getStringTemplate(templateType.s)).variations
   l = list.length
   return ((list[Math.floor(Math.random() * (l))]))
 }
+
+var templateType = {
+  "yes": 0,
+  "finished": 1,
+  "good": 2,
+  "readyForAnother": 3
+};
 
 module.exports = { handleMessage, handlePostback, sendInstantMessage }
