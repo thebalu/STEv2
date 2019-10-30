@@ -195,7 +195,7 @@ async function getAndSaveUserFirstName(senderId){
   const request = require('request');
 
   let name = "";
-  await name({
+  await getName({
       url: "https://graph.facebook.com/v2.6/" + senderId,
       qs: {
         access_token: config.get('Facebook.access_token'),
