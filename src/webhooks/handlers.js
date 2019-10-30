@@ -39,13 +39,13 @@ const handlePostback = async (sender_psid, received_postback) => {
   } catch (error) {
     console.error("Promise rejected" + error)
   }
-  let user = (await db.getUser(sender_psid))
+  var user = (await db.getUser(sender_psid))
   
 
   switch (payload) {
     case 'GET_STARTED':
       console.log("GETSTARTED")
-      console.log(user.userFirstName)
+      console.log(user)
       response = templates.buttonMessage(
         'Szia ' + user.userFirstName + '! Az én nevem Earthy, és megmutatom, hogy segíthetsz rajtam. Jöhet az első feladat? :)', [
         templates.button((await(generateString("yes"))) + (await generateString("exclamation")) + " " + (await generateString("smiley")), 'YES'),
