@@ -34,7 +34,7 @@ const handlePostback = async (sender_psid, received_postback) => {
     if (!(await db.getUser(sender_psid))) {
       console.log('Creating user' + sender_psid);
       await db.newUser(sender_psid);
-      name = await getAndSaveUserFirstName(sender_psid)
+      await getAndSaveUserFirstName(sender_psid)
     }
   } catch (error) {
     console.error("Promise rejected" + error)
