@@ -5,8 +5,8 @@ const config = require('config')
 
 const generateString = async (s) => {
   
-  list = (await db.getStringTemplate(templateType[s])).variations 
-  l = list.length
+  var list = (await db.getStringTemplate(templateType[s])).variations 
+  var l = list.length
   return ((list[Math.floor(Math.random() * (l))]))
 }
 
