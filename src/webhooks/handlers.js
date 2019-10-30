@@ -238,7 +238,7 @@ async function generateYes(){
   console.log("YESES:")
   list = (await db.getYes()).variations
   l = list.length
-  console.log((list[Math.floor(Math.random() * (l))]))
+  return ((list[Math.floor(Math.random() * (l))]))
 }
 
 module.exports = { handleMessage, handlePostback, sendInstantMessage }
