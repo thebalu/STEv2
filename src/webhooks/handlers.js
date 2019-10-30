@@ -4,7 +4,7 @@ const request = require('request')
 const config = require('config')
 
 const handleMessage = (sender_psid, received_message) => {
-
+  generateYes();
   console.log(received_message.text)
   switch (received_message.text) {
     case 'leiratkozás':
