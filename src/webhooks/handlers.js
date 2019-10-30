@@ -232,4 +232,4 @@ async function generateString(s){
 
 
 
-module.exports = { handleMessage, handlePostback, sendInstantMessage }
+module.exports = { handleMessage, handlePostback, sendInstantMessage, generateString }
