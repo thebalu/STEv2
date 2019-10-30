@@ -57,7 +57,7 @@ const handlePostback = async (sender_psid, received_postback) => {
       }
       response = templates.buttonMessage(
         'Szia ' + user.userFirstName + '! Az én nevem Earthy, és megmutatom, hogy segíthetsz rajtam. Jöhet az első feladat? :)', [
-        templates.button("Igen!", 'YES'),
+        templates.button(await(generateYes()), 'YES'),
         templates.button('Mesélj magadról!', 'HELP')
         
       ])
