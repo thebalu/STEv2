@@ -75,6 +75,10 @@ const getAllUsers = async() => {
   return users
 }
 
+const getYes = async () => {
+  return await db.collection('templateStrings').doc(String("0")).get()
+    .then(x => x.data())
+}
 
 module.exports = {
   newUser,
@@ -86,5 +90,6 @@ module.exports = {
   setActive,
   uploadTip,
   getAllUsers,
-  addUserName
+  addUserName,
+  getYes
 }
