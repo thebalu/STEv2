@@ -39,9 +39,7 @@ const handlePostback = async (sender_psid, received_postback) => {
   } catch (error) {
     console.error("Promise rejected" + error)
   }
-  var user
-  
-  user = (await db.getUser(sender_psid))
+  let user = (await db.getUser(sender_psid))
   
 
   switch (payload) {
