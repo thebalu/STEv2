@@ -29,12 +29,12 @@ const handlePostback = async (sender_psid, received_postback) => {
   let payload = received_postback.payload
 
   // Set the response based on the postback payload
-
+  let name = ""
   try {
     if (!(await db.getUser(sender_psid))) {
       console.log('Creating user' + sender_psid);
       await db.newUser(sender_psid);
-      await getAndSaveUserFirstName(sender_psid)
+      name = await getAndSaveUserFirstName(sender_psid)
     }
   } catch (error) {
     console.error("Promise rejected" + error)
@@ -50,7 +50,7 @@ const handlePostback = async (sender_psid, received_postback) => {
     case 'GET_STARTED':
       console.log("GETSTARTED")
       response = templates.buttonMessage(
-        'Szia ' + user.userFirstName + '! Az én nevem Earthy, és megmutatom, hogy segíthetsz rajtam. Jöhet az első feladat? :)', [
+        'Szia ' + name + '! Az én nevem Earthy, és megmutatom, hogy segíthetsz rajtam. Jöhet az első feladat? :)', [
         templates.button((await(generateString("yes"))) + (await generateString("exclamation")) + " " + (await generateString("smiley")), 'YES'),
         templates.button('Mesélj magadról!', 'HELP')
         
@@ -206,6 +206,7 @@ async function getAndSaveUserFirstName(senderId){
         db.addUserName(senderId, name)
       }
     });
+    return name
     
 }
 
