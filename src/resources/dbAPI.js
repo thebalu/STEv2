@@ -75,7 +75,7 @@ const getAllUsers = async() => {
   return users
 }
 
-const getTemplate = async (number) => {
+const getStringTemplate = async (number) => {
   return await db.collection('templateStrings').doc(String(number)).get()
     .then(x => x.data())
 }
@@ -91,5 +91,5 @@ module.exports = {
   uploadTip,
   getAllUsers,
   addUserName,
-  getTemplate
+  getStringTemplate
 }
