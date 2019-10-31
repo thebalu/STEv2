@@ -205,7 +205,9 @@ const sendInstantMessage = async (req, res) => {
       users = body.users
     } else {
       // todo kérjük le az adatbázisból az összes usert
-      users = ['2572117989520100', '2707581762588340']
+      // users = ['2572117989520100', '2707581762588340']
+      users = await db.getAllUsers()
+
     }
 
     users.forEach(user_id => {
