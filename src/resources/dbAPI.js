@@ -40,10 +40,7 @@ const setActive = (userId, active) => {
 
 const getTipById = async (tipId) => {
   return await db.collection('tips').doc(String(tipId)).get()
-      .then(x => {
-        if(x.data()) {console.log(x.data()); return x.data();}
-        else return {shortTitle: "Elfogytak a tippek!" , longTitle: "Elfogytak a tippek!", description: "Gratulálok! Egyelőre kimaxoltad a kihívásokat :D Továbbra is figyelj oda, hogy kövesd a tippeket. Majd jelentkezni fogok újakkal."}
-      })
+      .then(x => x.data())
 }
 
 const getNextTipForUser = async(userId) => {
@@ -51,6 +48,12 @@ const getNextTipForUser = async(userId) => {
   const nextTip = await getTipById(lastSeen+1)
   setSeen(userId, lastSeen+1)
   return nextTip
+}
+
+const checkFinished = async (userId) => {
+  const {lastSeen} = await getUser(userId)
+  const nextTip = await getTipById(lastSeen+1)
+  return (nextTip == undefined)
 }
 
 const getCurrentTipForUser = async (userId) => {
@@ -94,5 +97,6 @@ module.exports = {
   uploadTip,
   getAllUsers,
   addUserName,
-  getStringTemplate
+  getStringTemplate,
+  checkFinished
 }

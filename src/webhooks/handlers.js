@@ -13,11 +13,11 @@ const handleMessage = (sender_psid, received_message) => {
   if (titleAdded) {
     titleAdded = false
     title = received_message.text
-    response =  { "text": 'Add meg a kihívás leírását!' };
+    response = { "text": 'Add meg a kihívás leírását!' };
     descriptionAdded = true
     callSendAPI(sender_psid, response);
   }
-  else if (descriptionAdded){
+  else if (descriptionAdded) {
     tipDescription = received_message.text
     descriptionAdded = false
     response = templates.buttonMessage(
@@ -28,7 +28,7 @@ const handleMessage = (sender_psid, received_message) => {
     callSendAPI(sender_psid, response);
   }
   else switch (received_message.text) {
-    
+
     case 'leiratkozás':
       db.setActive(sender_psid, false);
       let response = templates.buttonMessage(
@@ -37,10 +37,10 @@ const handleMessage = (sender_psid, received_message) => {
       ])
       callSendAPI(sender_psid, response);
       break;
-    
+
     default:
       gernarateString("smiley")
-        .then(smiley => standarReply(standardReply(sender_psid, received_message, ("Szia! " + smiley +" Hogy állsz a múltkori kihívással? Mutatom mégegyszer:"))));
+        .then(smiley => standarReply(standardReply(sender_psid, received_message, ("Szia! " + smiley + " Hogy állsz a múltkori kihívással? Mutatom mégegyszer:"))));
       break;
   }
 
@@ -48,7 +48,7 @@ const handleMessage = (sender_psid, received_message) => {
 
 const handlePostback = async (sender_psid, received_postback) => {
   let response
-  
+
   let payload = received_postback.payload
 
   // Set the response based on the postback payload
@@ -63,7 +63,7 @@ const handlePostback = async (sender_psid, received_postback) => {
     console.error("Promise rejected" + error)
   }
   var user = (await db.getUser(sender_psid))
-  
+
 
   switch (payload) {
     case 'GET_STARTED':
@@ -71,14 +71,14 @@ const handlePostback = async (sender_psid, received_postback) => {
       console.log(user)
       response = templates.buttonMessage(
         'Szia! Az én nevem Earthy, és megmutatom, hogy segíthetsz rajtam. Jöhet az első feladat? :)', [
-        templates.button((await(generateString("yes"))) + (await generateString("exclamation")) + " " + (await generateString("smiley")), 'YES'),
+        templates.button((await (generateString("yes"))) + (await generateString("exclamation")) + " " + (await generateString("smiley")), 'YES'),
         templates.button('Mesélj magadról!', 'HELP')
-        
+
       ])
       break;
     case 'HELP':
       response = templates.buttonMessage(
-        'Tehát, a nevem Earthy, és én vagyok a bolygó, amin élsz. Sajnos az utóbbi időben Ti, emberek nagyon elhanyagoltok engem, rosszul érzem magam, és az állapotom lassan visszafordíthatatlanná válik. :( ' + 
+        'Tehát, a nevem Earthy, és én vagyok a bolygó, amin élsz. Sajnos az utóbbi időben Ti, emberek nagyon elhanyagoltok engem, rosszul érzem magam, és az állapotom lassan visszafordíthatatlanná válik. :( ' +
         'Tudod ' + user.userFirstName + ", az a legszomorúbb, hogy a legtöbb ember azt hiszi, nem tehet semmmit. Pedig ha összefogtok, a sok kicsi dolog csodákra képes! :) Készen állsz, hogy megmutassam, hogyan?", [
         templates.button((await (generateString("yes"))) + (await generateString("exclamation")), 'YES')
       ])
@@ -86,24 +86,28 @@ const handlePostback = async (sender_psid, received_postback) => {
       break;
     case 'DONE':
       response = templates.buttonMessage(
-        (await generateString("good")) + ', ' + user.userFirstName + '! '+ (await generateString("smiley")) +' ' + (await generateString("readyForAnother")),
-        [templates.button((await(generateString("yes"))) + (await generateString("exclamation")) + " " + (await generateString("smiley")), 'YES'),
+        (await generateString("good")) + ', ' + user.userFirstName + '! ' + (await generateString("smiley")) + ' ' + (await generateString("readyForAnother")),
+        [templates.button((await (generateString("yes"))) + (await generateString("exclamation")) + " " + (await generateString("smiley")), 'YES'),
         templates.button('Mára elég ennyi', 'NO')]
       )
       break;
 
     case 'YES':
-      try {
-        nextTip = await db.getNextTipForUser(sender_psid);
-        tipText = "*" + nextTip.longTitle + ":* " + nextTip.description + '\n Szólj, ha kész vagy!'
-      } catch (error) {
-        console.error("promise rejected " + error)
+      if (await db.checkFinished(sender_psid)) {
+        response = {text: "Gratulálok! Egyelőre kimaxoltad a kihívásokat :D Figyelj oda továbbra is, hogy betartsd a tippeket. Hamarosan továbbiakkal jelentkezek."}
+      } else {
+        try {
+          nextTip = await db.getNextTipForUser(sender_psid);
+          tipText = "*" + nextTip.longTitle + ":* " + nextTip.description + '\n Szólj, ha kész vagy!'
+        } catch (error) {
+          console.error("promise rejected " + error)
+        }
+        response = templates.buttonMessage(
+          tipText,
+          [templates.button((await generateString("finished")) + (await generateString("exclamation")) + " " + (await generateString("smiley")), 'DONE'),
+          templates.button('Másikat kérek', 'ANOTHER')] // ez another volt
+        )
       }
-      response = templates.buttonMessage(
-        tipText,
-        [templates.button((await generateString("finished")) + (await generateString("exclamation")) + " " + (await generateString("smiley")), 'DONE'),
-        templates.button('Másikat kérek', 'ANOTHER')] // ez another volt
-      )
       break;
 
     case 'ANOTHER':
@@ -120,16 +124,16 @@ const handlePostback = async (sender_psid, received_postback) => {
       )
       break;
     case 'NO':
-      response = { "text": 'Sajnálom, ' + user.userFirstName +'. Várlak vissza! ' + (await generateString("smiley")) }
+      response = { "text": 'Sajnálom, ' + user.userFirstName + '. Várlak vissza! ' + (await generateString("smiley")) }
       break;
 
     case 'ACTIVATE':
       db.setActive(sender_psid, true);
-      standardReply(sender_psid, received_postback, 'Örülök, hogy újra itt vagy, '+ user.userFirstName +'! Folytassuk onnan, ahol a múltkor abbahagytuk. Itt is van a következő kihívás:')
+      standardReply(sender_psid, received_postback, 'Örülök, hogy újra itt vagy, ' + user.userFirstName + '! Folytassuk onnan, ahol a múltkor abbahagytuk. Itt is van a következő kihívás:')
       break;
-    
+
     case 'TIPTITLE':
-      response =  { "text": 'Add meg a kihívás rövid címét!' };
+      response = { "text": 'Add meg a kihívás rövid címét!' };
       titleAdded = true
       break;
     case 'SAVENEWTIP':
@@ -220,29 +224,29 @@ const sendInstantMessage = async (req, res) => {
   }
 }
 
-async function getAndSaveUserFirstName(senderId){
+async function getAndSaveUserFirstName(senderId) {
   var request = require('request');
 
   var name = "";
   await request({
-      url: "https://graph.facebook.com/v2.6/" + senderId,
-      qs: {
-        access_token: config.get('Facebook.access_token'),
-        fields: "first_name"
-      },
-      method: "GET"
-    }, function(error, response, body) {
-      if (error) {
-        console.log("Error getting user's name: " +  error);
-      } else {
-        var bodyObj = JSON.parse(body);
-        name = bodyObj.first_name;
-        console.log("First name: " +  name);
-        db.addUserName(senderId, name)
-      }
-    });
-    return name
-    
+    url: "https://graph.facebook.com/v2.6/" + senderId,
+    qs: {
+      access_token: config.get('Facebook.access_token'),
+      fields: "first_name"
+    },
+    method: "GET"
+  }, function (error, response, body) {
+    if (error) {
+      console.log("Error getting user's name: " + error);
+    } else {
+      var bodyObj = JSON.parse(body);
+      name = bodyObj.first_name;
+      console.log("First name: " + name);
+      db.addUserName(senderId, name)
+    }
+  });
+  return name
+
 }
 
 var templateType = {
@@ -255,8 +259,8 @@ var templateType = {
 };
 
 const generateString = async (s) => {
-  
-  var list = (await db.getStringTemplate(templateType[s])).variations 
+
+  var list = (await db.getStringTemplate(templateType[s])).variations
   var l = list.length
   return ((list[Math.floor(Math.random() * (l))]))
 }
