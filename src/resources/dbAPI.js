@@ -41,8 +41,8 @@ const setActive = (userId, active) => {
 const getTipById = async (tipId) => {
   return await db.collection('tips').doc(String(tipId)).get()
       .then(x => {
-        if(x.data) {console.log(x.data); return x.data();}
-        else return {shortTitle: "Elfogytak a tippek!" , longTitle: "Elfogytak a tippek!", description: "Gratulálunk! Egyelőre kimaxoltad a kihívásokat :D Továbbra is figyelj oda, hogy kövesd a tippeket. Majd jelentkezni fogunk újakkal."}
+        if(x.data()) {console.log(x.data()); return x.data();}
+        else return {shortTitle: "Elfogytak a tippek!" , longTitle: "Elfogytak a tippek!", description: "Gratulálok! Egyelőre kimaxoltad a kihívásokat :D Továbbra is figyelj oda, hogy kövesd a tippeket. Majd jelentkezni fogok újakkal."}
       })
 }
 
