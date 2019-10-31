@@ -1,98 +1,84 @@
-const low      = require('lowdb')
-const FileSync = require('lowdb/adapters/FileSync')
+//https://firebase.google.com/docs/firestore/quickstart
 
-const adapter = new FileSync('./src/resources/db.json')
-const db = low(adapter)
+const Firestore  = require('@google-cloud/firestore')
 
-const newUser = (userId) => {
-  db.get('users')
-  .push({
+const db = new Firestore({
+  keyFilename: `${__dirname}/serviceAccountKey.json`,
+})
+
+
+const newUser = async (userId) => {
+  db.collection('users').doc(String(userId)).set({
     id: userId,
-    seen: []
+    lastSeen: 0,
+    active: true
   })
-  .write()
 }
 
-const resetUserSeen = (userId) =>
-  db.get('users')
-  .find({id: userId})
-  .set('seen', [])
-  .write()
-
-const newTip = (userId, title, desc) => {
-  db.get('tips')
-  .push({
-    id: (db.get('tips').value())[(db.get('tips').value().length)-1]+1,
-    shortTitle: title,
-    longTitle: title,
-    description: desc,
-    addedByUser: userId
+const addUserName = async (userId, userFirstName) => {
+  db.collection('users').doc(String(userId)).update({
+    userFirstName: userFirstName
   })
-  .write()
 }
 
-const getUser = (userId) => {
-  return db.get('users')
-  .find({id: userId})
-  .value()
+const getUser = async (userId) => {
+  return await db.collection('users').doc(String(userId)).get()
+    .then(x => x.data())
 }
 
 const setSeen = (userId, tipId) => {
-  db.get('users')
-  .find({id: userId})
-  .get('seen')
-  .push(tipId)
-  .write()
+  db.collection('users').doc(String(userId)).update({
+    lastSeen: tipId,
+  })
 }
 
 const setActive = (userId, active) => {
-  db.get('users')
-    .find({id: userId})
-    .set('active', active)
-    .write()
+  db.collection('users').doc(String(userId)).update({
+    active
+  })
 }
 
-const getTipById = (tipId) => {
-  return db.get('tips')
-  .find({id: tipId})
-  .value()
+const getTipById = async (tipId) => {
+  return await db.collection('tips').doc(String(tipId)).get()
+      .then(x => x.data())
 }
 
-const getNextTipForUser = (userId) => {
-  const seen = 
-  db.get('users')
-  .find({id: userId})
-  .get('seen')
-  .value()
-  if(seen.length == 0) {
-    setSeen(userId, 1)    
-    return getTipById(1);
-  }
-  const lastSeen = seen[seen.length - 1]
+const getNextTipForUser = async(userId) => {
+  const {lastSeen} = await getUser(userId)
+  const nextTip = await getTipById(lastSeen+1)
   setSeen(userId, lastSeen+1)
-  return getTipById(lastSeen+1)
+  return nextTip
 }
 
-const getCurrentTipForUser = (userId) => {
-  const seen = 
-  db.get('users')
-  .find({id: userId})
-  .get('seen')
-  .value()
-  if(seen.length == 0) {
-    // setSeen(userId, 1)    
-    // should only be called when there was already a tip seen
-    return getTipById(1);
-  }
-  const lastSeen = seen[seen.length - 1]
-  return getTipById(lastSeen)
+const getCurrentTipForUser = async (userId) => {
+  const {lastSeen} = await getUser(userId)
+  return await getTipById(lastSeen)
 }
-/* Test */
-//newUser('Zoltan')
-//console.log(getTipById(1))
-//setSeen('Zoltan', 1)
-//setSeen('Zoltan', 2)
-//console.log(getNextTipForUser('Zoltan'))
+
+const uploadTip = ({id, shortTitle, longTitle, description}) => {
+  db.collection('tips').doc(String(id)).set({
+    shortTitle,
+    longTitle,
+    description
+  })
+}
+
+const getAllUsers = async() => {
+  const users = []
+  await db.collection('users').get()
+    .then(snapshot => {
+      snapshot.forEach(doc => {
+        users.push(doc.id)
+      })
+    })
+  
+  return users
+}
+
+const getStringTemplate = async (id) => {
+  return await db.collection('templateStrings').doc(String(id)).get()
+    .then(x => x.data())
+}
 
 module.exports = {
   newUser,
@@ -102,6 +88,8 @@ module.exports = {
   getNextTipForUser,
   getCurrentTipForUser,
   setActive,
-  newTip,
-  resetUserSeen,
+  uploadTip,
+  getAllUsers,
+  addUserName,
+  getStringTemplate
 }

@@ -4,6 +4,7 @@ const router  = express.Router()
 const {
 	handleMessage,
     handlePostback,
+    sendInstantMessage
 } = require('./handlers')
 
 // Adds support for GET requests to our webhook
@@ -71,5 +72,7 @@ router.post('/webhook', (req, res) => {
         res.sendStatus(404)
     }
 })
+
+router.post('/instant_message', sendInstantMessage)
 
 module.exports = router
