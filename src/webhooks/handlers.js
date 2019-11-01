@@ -65,7 +65,7 @@ const handlePostback = async (sender_psid, received_postback) => {
       
       if (await maybeShowProgress(sender_psid, user, user.done + 1)){
         response = templates.buttonMessage(
-          'Szóval, ' + user.userFirstName +', ' + (await generateString("readyForAnother")),
+          (await generateString("readyForAnother")),
           [templates.button((await(generateString("yes"))) + (await generateString("exclamation")) + " " + (await generateString("smiley")), 'YES'),
           templates.button('Mára elég ennyi', 'NO')]
         )
