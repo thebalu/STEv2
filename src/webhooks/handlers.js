@@ -62,13 +62,24 @@ const handlePostback = async (sender_psid, received_postback) => {
       break;
     case 'DONE':
       db.addNumberDone(sender_psid, user.done + 1)
+      
+      if (await maybeShowProgress(sender_psid, user, user.done + 1)){
+        response = templates.buttonMessage(
+          'Szóval, ' + user.userFirstName +', ' + (await generateString("readyForAnother")),
+          [templates.button((await(generateString("yes"))) + (await generateString("exclamation")) + " " + (await generateString("smiley")), 'YES'),
+          templates.button('Mára elég ennyi', 'NO')]
+        )
+      }
+      else{
+        response = templates.buttonMessage(
+          (await generateString("good")) + ', ' + user.userFirstName + '! '+ (await generateString("smiley")) +' ' + (await generateString("readyForAnother")),
+          [templates.button((await(generateString("yes"))) + (await generateString("exclamation")) + " " + (await generateString("smiley")), 'YES'),
+          templates.button('Mára elég ennyi', 'NO')]
+        )
+      }
 
 
-      response = templates.buttonMessage(
-        (await generateString("good")) + ', ' + user.userFirstName + '! '+ (await generateString("smiley")) +' ' + (await generateString("readyForAnother")),
-        [templates.button((await(generateString("yes"))) + (await generateString("exclamation")) + " " + (await generateString("smiley")), 'YES'),
-        templates.button('Mára elég ennyi', 'NO')]
-      )
+      
       break;
 
     case 'YES':
@@ -224,6 +235,17 @@ const generateString = async (s) => {
   var list = (await db.getStringTemplate(templateType[s])).variations 
   var l = list.length
   return ((list[Math.floor(Math.random() * (l))]))
+}
+
+const maybeShowProgress = async (sender_psid, user, done) => {
+  var r = Math.floor(Math.random() * 10)
+  if (r == 1){
+    good = await generateString("good")
+    smiley = await generateString("smiley")
+    callSendAPI (sender_psid, good + user.name + "! " + smiley + "Már " + done + "kihívást teljesítettél, nagyon jól haladsz! " + smiley)
+    return true
+  }
+  return false
 }
 
 module.exports = { handleMessage, handlePostback, sendInstantMessage }
