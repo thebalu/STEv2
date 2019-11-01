@@ -11,7 +11,8 @@ const newUser = async (userId) => {
   db.collection('users').doc(String(userId)).set({
     id: userId,
     lastSeen: 0,
-    active: true
+    active: true,
+    done: 0
   })
 }
 
@@ -35,6 +36,12 @@ const setSeen = (userId, tipId) => {
 const setActive = (userId, active) => {
   db.collection('users').doc(String(userId)).update({
     active
+  })
+}
+
+const addNumberDone = (userId, doneN) => {
+  db.collection('users').doc(String(userId)).update({
+    done: doneN
   })
 }
 
@@ -91,5 +98,6 @@ module.exports = {
   uploadTip,
   getAllUsers,
   addUserName,
-  getStringTemplate
+  getStringTemplate,
+  addNumberDone
 }

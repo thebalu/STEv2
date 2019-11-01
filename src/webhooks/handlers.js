@@ -61,6 +61,9 @@ const handlePostback = async (sender_psid, received_postback) => {
       ])
       break;
     case 'DONE':
+      db.addNumberDone(sender_psid, user.done + 1)
+
+
       response = templates.buttonMessage(
         (await generateString("good")) + ', ' + user.userFirstName + '! '+ (await generateString("smiley")) +' ' + (await generateString("readyForAnother")),
         [templates.button((await(generateString("yes"))) + (await generateString("exclamation")) + " " + (await generateString("smiley")), 'YES'),
