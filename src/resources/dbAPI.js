@@ -32,6 +32,12 @@ const setSeen = (userId, tipId) => {
   })
 }
 
+const addNumberDone = (userId, doneN) => {
+  db.collection('users').doc(String(userId)).update({
+    done: doneN
+  })
+}
+
 const setActive = (userId, active) => {
   db.collection('users').doc(String(userId)).update({
     active
@@ -98,5 +104,6 @@ module.exports = {
   getAllUsers,
   addUserName,
   getStringTemplate,
-  checkFinished
+  checkFinished,
+  addNumberDone
 }
