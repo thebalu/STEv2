@@ -280,7 +280,7 @@ const generateString = async (s) => {
 }
 
 const maybeShowProgress = async (sender_psid, user, done) => {
-  var r = Math.floor(Math.random() * 10)
+  var r = Math.floor(Math.random() * 3)
   if (r == 1){
     good = await generateString("good")
     smiley = await generateString("smiley")
