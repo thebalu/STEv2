@@ -11,7 +11,8 @@ const newUser = async (userId) => {
   db.collection('users').doc(String(userId)).set({
     id: userId,
     lastSeen: 0,
-    active: true
+    active: true,
+    done: 0
   })
 }
 
