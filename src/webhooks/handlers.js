@@ -285,7 +285,7 @@ const maybeShowProgress = async (sender_psid, user, done) => {
   if (r==1){
     good = await generateString("good")
     smiley = await generateString("smiley")
-    callSendAPI (sender_psid, {text: good + user.name + "! " + smiley + "Már " + done + "kihívást teljesítettél, nagyon jól haladsz! " + smiley})
+    callSendAPI (sender_psid, {text: good + user.userFirstName + "! " + smiley + "Már " + done + "kihívást teljesítettél, nagyon jól haladsz! " + smiley})
     return true
   }
   return false
