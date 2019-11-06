@@ -11,8 +11,7 @@ const newUser = async (userId) => {
   db.collection('users').doc(String(userId)).set({
     id: userId,
     lastSeen: 0,
-    active: true,
-    done: 0
+    active: true
   })
 }
 
@@ -39,12 +38,6 @@ const setActive = (userId, active) => {
   })
 }
 
-const addNumberDone = (userId, doneN) => {
-  db.collection('users').doc(String(userId)).update({
-    done: doneN
-  })
-}
-
 const getTipById = async (tipId) => {
   return await db.collection('tips').doc(String(tipId)).get()
       .then(x => x.data())
@@ -55,6 +48,12 @@ const getNextTipForUser = async(userId) => {
   const nextTip = await getTipById(lastSeen+1)
   setSeen(userId, lastSeen+1)
   return nextTip
+}
+
+const checkFinished = async (userId) => {
+  const {lastSeen} = await getUser(userId)
+  const nextTip = await getTipById(lastSeen+1)
+  return (nextTip == undefined)
 }
 
 const getCurrentTipForUser = async (userId) => {
@@ -99,5 +98,5 @@ module.exports = {
   getAllUsers,
   addUserName,
   getStringTemplate,
-  addNumberDone
+  checkFinished
 }
