@@ -281,7 +281,8 @@ const generateString = async (s) => {
 
 const maybeShowProgress = async (sender_psid, user, done) => {
   var r = Math.floor(Math.random() * 3)
-  if (r == 1){
+  console.log("showing progress")
+  if (true){
     good = await generateString("good")
     smiley = await generateString("smiley")
     callSendAPI (sender_psid, good + user.name + "! " + smiley + "Már " + done + "kihívást teljesítettél, nagyon jól haladsz! " + smiley)
