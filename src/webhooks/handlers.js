@@ -116,15 +116,16 @@ const handlePostback = async (sender_psid, received_postback) => {
           let nextTip = await db.getNextTipForUser(sender_psid);
           
           if (user.language=='hu_HU'){
-            tipText = "*" + nextTip.longTitle + ":* " + nextTip.description + '\n Szólj, ha kész vagy!'
+            tipText = "*" + nextTip.longTitle + ":* " + nextTip.description + '\nSzólj, ha kész vagy!'
           }
           else{
-            tipText = "*" + nextTip.longTitle + ":* " + nextTip.description_en + "\n Tell me, when you're ready!"
+            tipText = "*" + nextTip.longTitle + ":* " + nextTip.description_en + "\nTell me, when you're ready!"
           }
           
         } catch (error) {
           console.error("promise rejected " + error)
         }
+        console.log("TipText:" + tipText)
         response = templates.buttonMessage(
           tipText,
           [templates.button((await generateString("finished", lan)) + (await generateString("exclamation", lan)) + " " + (await generateString("smiley", lan)), 'DONE'),
