@@ -39,7 +39,7 @@ const handleMessage = (sender_psid, received_message) => {
       break;
 
     default:
-      gernarateString("smiley")
+      gernarateString("smiley", "hu_HU")
         .then(smiley => standarReply(standardReply(sender_psid, received_message, ("Szia! " + smiley + " Hogy állsz a múltkori kihívással? Mutatom mégegyszer:"))));
       break;
   }
