@@ -41,8 +41,8 @@ const handleMessage = async (sender_psid, received_message) => {
       break;
 
     default:
-      gernarateString("smiley", lan)
-        .then(smiley => standarReply(standardReply(sender_psid, received_message, ("Szia! " + smiley + " Hogy állsz a múltkori kihívással? Mutatom mégegyszer:"))));
+      let sm = await gernarateString("smiley", lan);
+      standarReply(standardReply(sender_psid, received_message, ("Szia! " + smiley + " Hogy állsz a múltkori kihívással? Mutatom mégegyszer:")));
       break;
   }
 
