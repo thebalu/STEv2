@@ -126,10 +126,12 @@ const handlePostback = async (sender_psid, received_postback) => {
           console.error("promise rejected " + error)
         }
         console.log("TipText:" + tipText)
+        let fin = (await generateString("finished", lan)) + (await generateString("exclamation", lan)) + " " + (await generateString("smiley", lan));
+        let ano = (await generateString("another", lan));
         response = templates.buttonMessage(
           tipText,
-          [templates.button((await generateString("finished", lan)) + (await generateString("exclamation", lan)) + " " + (await generateString("smiley", lan)), 'DONE'),
-          templates.button((await generateString("another", lan), 'ANOTHER'))] // ez another volt
+          [templates.button(fin, 'DONE'),
+          templates.button(ano, 'ANOTHER')]
         )
       }
       break;
