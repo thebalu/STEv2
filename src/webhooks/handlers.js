@@ -9,6 +9,7 @@ let title
 let tipDescription
 
 const handleMessage = (sender_psid, received_message) => {
+  console.log("FUNCTION HANDLE MESSAGE")
   console.log("Received message: " + received_message.text)
   //var user = (await db.getUser(sender_psid))
   var lan = user.language;
