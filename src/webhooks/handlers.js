@@ -255,8 +255,10 @@ async function getAndSaveUserFirstName(senderId) {
     } else {
       var bodyObj = JSON.parse(body);
       name = bodyObj.first_name;
+      language = bodyObj.locale;
       console.log("First name: " + name);
       db.addUserName(senderId, name)
+      db.addUserLanguage(senderId, language);
     }
   });
   return name

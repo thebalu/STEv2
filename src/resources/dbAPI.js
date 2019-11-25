@@ -22,6 +22,12 @@ const addUserName = async (userId, userFirstName) => {
   })
 }
 
+const addUserLanguage = async (userId, userLanguage) => {
+  db.collection('users').doc(String(userId)).update({
+    language: userLanguage
+  })
+}
+
 const getUser = async (userId) => {
   return await db.collection('users').doc(String(userId)).get()
     .then(x => x.data())
@@ -106,5 +112,6 @@ module.exports = {
   addUserName,
   getStringTemplate,
   checkFinished,
-  addNumberDone
+  addNumberDone,
+  addUserLanguage
 }
