@@ -10,6 +10,8 @@ let tipDescription
 
 const handleMessage = (sender_psid, received_message) => {
   console.log(received_message.text)
+  var user = (await db.getUser(sender_psid))
+  var lan = user.language;
   if (titleAdded) {
     titleAdded = false
     title = received_message.text
@@ -39,7 +41,7 @@ const handleMessage = (sender_psid, received_message) => {
       break;
 
     default:
-      gernarateString("smiley", "hu_HU")
+      gernarateString("smiley", lan)
         .then(smiley => standarReply(standardReply(sender_psid, received_message, ("Szia! " + smiley + " Hogy állsz a múltkori kihívással? Mutatom mégegyszer:"))));
       break;
   }
