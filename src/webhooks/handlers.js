@@ -113,6 +113,7 @@ const handlePostback = async (sender_psid, received_postback) => {
       } else {
         try {
           let nextTip = await db.getNextTipForUser(sender_psid);
+          let tipText;
           if (user.language=='hu_HU'){
             tipText = "*" + nextTip.longTitle + ":* " + nextTip.description + '\n Szólj, ha kész vagy!'
           }
