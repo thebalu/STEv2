@@ -246,7 +246,7 @@ async function getAndSaveUserFirstName(senderId) {
     url: "https://graph.facebook.com/v2.6/" + senderId,
     qs: {
       access_token: config.get('Facebook.access_token'),
-      fields: "first_name"
+      fields: "first_name, locale"
     },
     method: "GET"
   }, function (error, response, body) {
