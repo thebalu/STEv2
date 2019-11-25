@@ -301,6 +301,8 @@ const generateString = async (s, userLanguage) => {
   else
     list = (await db.getStringTemplate(templateType[s])).variations_en
   var l = list.length
+  console.log("l: " + l)
+  console.log("variations: " + list);
   return ((list[Math.floor(Math.random() * (l))]))
 }
 
