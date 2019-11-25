@@ -306,7 +306,9 @@ var templateType = {
   "intro_long": "10",
   "more_intro": "11",
   "sorry": "12",
-  "seeYou": "13"
+  "seeYou": "13",
+  "progressBegin": "14",
+  "progressEnd": "15"
 
 };
 
@@ -327,10 +329,13 @@ const generateString = async (s, userLanguage) => {
 const maybeShowProgress = async (sender_psid, user, done) => {
   var r = Math.floor(Math.random() * 3)
   console.log("showing progress")
+  var lan = user.language;
   if (r==1){
-    good = await generateString("good")
-    smiley = await generateString("smiley")
-    callSendAPI (sender_psid, {text: good + " "+ user.userFirstName + "! " + smiley + "Már " + done + "kihívást teljesítettél, nagyon jól haladsz! " + smiley})
+    good = await generateString("good", lan)
+    smiley = await generateString("smiley", lan)
+    progB = await generateString("progressBegin", lan)
+    progE = await generateString("progressEnd", lan)
+    callSendAPI (sender_psid, {text: good + " "+ user.userFirstName + "! " + smiley + " " + progB + " " + done + " " + progE + " " + smiley})
     return true
   }
   return false
