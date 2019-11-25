@@ -303,7 +303,9 @@ const generateString = async (s, userLanguage) => {
   var l = list.length
   console.log("l: " + l)
   console.log("variations: " + list);
-  return ((list[Math.floor(Math.random() * (l))+1]))
+  let r = (list[Math.floor(Math.random() * (l))+1])
+  console.log("generateString return: " + r)
+  return (r)
 }
 
 const maybeShowProgress = async (sender_psid, user, done) => {
