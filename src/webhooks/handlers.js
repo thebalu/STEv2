@@ -126,7 +126,7 @@ const handlePostback = async (sender_psid, received_postback) => {
         response = templates.buttonMessage(
           tipText,
           [templates.button((await generateString("finished", lan)) + (await generateString("exclamation", lan)) + " " + (await generateString("smiley", lan)), 'DONE'),
-          templates.button('Másikat kérek', 'ANOTHER')] // ez another volt
+          templates.button((await generateString("another", lan), 'ANOTHER')] // ez another volt
         )
       }
       break;
@@ -147,7 +147,7 @@ const handlePostback = async (sender_psid, received_postback) => {
       response = templates.buttonMessage(
         tipText,
         [templates.button((await generateString("finished", lan)), 'DONE'),
-        templates.button('Másikat kérek', 'ANOTHER')] // ez another volt
+        templates.button(((await generateString("another", lan)), 'ANOTHER'))] // ez another volt
       )
       break;
     case 'NO':
@@ -217,7 +217,7 @@ const standardReply = async (sender_psid, received_message, before_text) => {
   response2 = templates.buttonMessage(
     tipText,
     [templates.button((await generateString("finished", lan)), 'DONE'),
-    templates.button('Másikat kérek', 'YES')] // ez another volt
+    templates.button((await generateString("another", lan)), 'YES')] // ez another volt
   )
 
   if (received_message.text || received_message.payload) {
@@ -287,7 +287,8 @@ var templateType = {
   "readyForAnother": "3",
   "smiley": "4",
   "exclamation": "5",
-  "hi": "6"
+  "hi": "6",
+  "another": "7"
 };
 
 const generateString = async (s, userLanguage) => {
