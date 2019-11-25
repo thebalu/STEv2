@@ -63,15 +63,16 @@ const handlePostback = async (sender_psid, received_postback) => {
     console.error("Promise rejected" + error)
   }
   var user = (await db.getUser(sender_psid))
-
+  let lan = user.language;
 
   switch (payload) {
     case 'GET_STARTED':
       console.log("GETSTARTED")
       console.log(user)
+      
       response = templates.buttonMessage(
         'Szia! Az én nevem Earthy, és megmutatom, hogy segíthetsz rajtam. Jöhet az első feladat? :)', [
-        templates.button((await (generateString("yes"))) + (await generateString("exclamation")) + " " + (await generateString("smiley")), 'YES'),
+        templates.button((await (generateString("yes", lan))) + (await generateString("exclamation", lan)) + " " + (await generateString("smiley", lan)), 'YES'),
         templates.button('Mesélj magadról!', 'HELP')
 
       ])
@@ -80,7 +81,7 @@ const handlePostback = async (sender_psid, received_postback) => {
       response = templates.buttonMessage(
         'Tehát, a nevem Earthy, és én vagyok a bolygó, amin élsz. Sajnos az utóbbi időben Ti, emberek nagyon elhanyagoltok engem, rosszul érzem magam, és az állapotom lassan visszafordíthatatlanná válik. :( ' +
         'Tudod ' + user.userFirstName + ", az a legszomorúbb, hogy a legtöbb ember azt hiszi, nem tehet semmmit. Pedig ha összefogtok, a sok kicsi dolog csodákra képes! :) Készen állsz, hogy megmutassam, hogyan?", [
-        templates.button((await (generateString("yes"))) + (await generateString("exclamation")), 'YES')
+        templates.button((await (generateString("yes", lan))) + (await generateString("exclamation", lan)), 'YES')
       ])
 
       break;
@@ -89,15 +90,15 @@ const handlePostback = async (sender_psid, received_postback) => {
       
       if (await maybeShowProgress(sender_psid, user, user.done + 1)){
         response = templates.buttonMessage(
-          (await generateString("readyForAnother")),
-          [templates.button((await(generateString("yes"))) + (await generateString("exclamation")) + " " + (await generateString("smiley")), 'YES'),
+          (await generateString("readyForAnother", lan)),
+          [templates.button((await(generateString("yes", lan))) + (await generateString("exclamation", lan)) + " " + (await generateString("smiley", lan)), 'YES'),
           templates.button('Mára elég ennyi', 'NO')]
         )
       }
       else{
         response = templates.buttonMessage(
-          (await generateString("good")) + ', ' + user.userFirstName + '! '+ (await generateString("smiley")) +' ' + (await generateString("readyForAnother")),
-          [templates.button((await(generateString("yes"))) + (await generateString("exclamation")) + " " + (await generateString("smiley")), 'YES'),
+          (await generateString("good", lan)) + ', ' + user.userFirstName + '! '+ (await generateString("smiley", lan)) +' ' + (await generateString("readyForAnother", lan)),
+          [templates.button((await(generateString("yes", lan))) + (await generateString("exclamation", lan)) + " " + (await generateString("smiley", lan)), 'YES'),
           templates.button('Mára elég ennyi', 'NO')]
         )
       }
@@ -124,7 +125,7 @@ const handlePostback = async (sender_psid, received_postback) => {
         }
         response = templates.buttonMessage(
           tipText,
-          [templates.button((await generateString("finished")) + (await generateString("exclamation")) + " " + (await generateString("smiley")), 'DONE'),
+          [templates.button((await generateString("finished", lan)) + (await generateString("exclamation", lan)) + " " + (await generateString("smiley", lan)), 'DONE'),
           templates.button('Másikat kérek', 'ANOTHER')] // ez another volt
         )
       }
@@ -145,7 +146,7 @@ const handlePostback = async (sender_psid, received_postback) => {
       }
       response = templates.buttonMessage(
         tipText,
-        [templates.button((await generateString("finished")), 'DONE'),
+        [templates.button((await generateString("finished", lan)), 'DONE'),
         templates.button('Másikat kérek', 'ANOTHER')] // ez another volt
       )
       break;
@@ -215,7 +216,7 @@ const standardReply = async (sender_psid, received_message, before_text) => {
 
   response2 = templates.buttonMessage(
     tipText,
-    [templates.button((await generateString("finished")), 'DONE'),
+    [templates.button((await generateString("finished", lan)), 'DONE'),
     templates.button('Másikat kérek', 'YES')] // ez another volt
   )
 
@@ -285,12 +286,16 @@ var templateType = {
   "good": "2",
   "readyForAnother": "3",
   "smiley": "4",
-  "exclamation": "5"
+  "exclamation": "5",
+  "hi": "6"
 };
 
-const generateString = async (s) => {
-
-  var list = (await db.getStringTemplate(templateType[s])).variations
+const generateString = async (s, userLanguage) => {
+  var list
+  if (userLanguage=='hu_HU' || s == "smiley" || s == "exclamation")
+    list = (await db.getStringTemplate(templateType[s])).variations
+  else
+    list = (await db.getStringTemplate(templateType[s])).variations_en
   var l = list.length
   return ((list[Math.floor(Math.random() * (l))]))
 }
