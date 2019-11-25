@@ -108,12 +108,13 @@ const handlePostback = async (sender_psid, received_postback) => {
       break;
 
     case 'YES':
+      var tipText;
       if (await db.checkFinished(sender_psid)) {
         response = {text: "Gratulálok! Egyelőre kimaxoltad a kihívásokat :D Figyelj oda továbbra is, hogy betartsd a tippeket. Hamarosan továbbiakkal jelentkezek."}
       } else {
         try {
           let nextTip = await db.getNextTipForUser(sender_psid);
-          let tipText;
+          
           if (user.language=='hu_HU'){
             tipText = "*" + nextTip.longTitle + ":* " + nextTip.description + '\n Szólj, ha kész vagy!'
           }
