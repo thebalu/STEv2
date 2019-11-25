@@ -9,7 +9,7 @@ let title
 let tipDescription
 
 const handleMessage = async (sender_psid, received_message) => {
-  console.log(received_message.text)
+  console.log("Received message: " + received_message.text)
   var user = (await db.getUser(sender_psid))
   var lan = user.language;
   if (titleAdded) {
