@@ -9,9 +9,10 @@ let title
 let tipDescription
 
 const handleMessage = (sender_psid, received_message) => {
-  console.log("FUNCTION HANDLE MESSAGE")
   console.log("Received message: " + received_message.text)
-  //var user = (await db.getUser(sender_psid))
+  var user;
+  db.getUser(sender_psid)
+        .then(u => user = u);
   var lan = user.language;
   if (titleAdded) {
     titleAdded = false
@@ -42,9 +43,9 @@ const handleMessage = (sender_psid, received_message) => {
       break;
 
     default:
-      //let sm = await gernarateString("smiley", lan);
-      var sm;
-      standardReply(sender_psid, received_message, ("Szia! " + sm + " Hogy állsz a múltkori kihívással? Mutatom mégegyszer:"));
+      
+        gernarateString("smiley")
+        .then(sm => standardReply(sender_psid, received_message, ("Szia! " + sm + " Hogy állsz a múltkori kihívással? Mutatom mégegyszer:")));
       break;
   }
 
