@@ -73,7 +73,7 @@ const handlePostback = async (sender_psid, received_postback) => {
       response = templates.buttonMessage(
         (await (generateString("intro_short", lan))), [
         templates.button((await (generateString("yes", lan))) + (await generateString("exclamation", lan)) + " " + (await generateString("smiley", lan)), 'YES'),
-        templates.button('Mesélj magadról!', 'HELP')
+        templates.button((await (generateString("more_intro", lan))), 'HELP')
 
       ])
       break;
@@ -155,7 +155,7 @@ const handlePostback = async (sender_psid, received_postback) => {
       )
       break;
     case 'NO':
-      response = { "text": 'Sajnálom, ' + user.userFirstName + '. Várlak vissza! ' + (await generateString("smiley")) }
+      response = { "text": (await generateString("sorry", lan)) + ", " + user.userFirstName + '. ' + (await generateString("seeYou")) + (await generateString("exclamation")) + (await generateString("smiley")) }
       break;
 
     case 'ACTIVATE':
@@ -295,7 +295,10 @@ var templateType = {
   "another": "7",
   "enough": "8",
   "intro_short": "9",
-  "intro_long": "10"
+  "intro_long": "10",
+  "more_intro": "11",
+  "sorry": "12",
+  "seeYou": "13"
 
 };
 
