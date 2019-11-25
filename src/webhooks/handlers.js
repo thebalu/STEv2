@@ -140,6 +140,7 @@ const handlePostback = async (sender_psid, received_postback) => {
     case 'ANOTHER':
       try {
         nextTip = await db.getNextTipForUser(sender_psid);
+        var tipText;
         if (user.language == 'hu_HU'){
           tipText = "Rendben, itt egy másik: \n *" + nextTip.longTitle + ":* " + nextTip.description + '\n Szólj, ha kész vagy!'
         }
@@ -150,10 +151,12 @@ const handlePostback = async (sender_psid, received_postback) => {
       } catch (error) {
         console.error("promise rejected " + error)
       }
+      let fin = (await generateString("finished", lan)) + (await generateString("exclamation", lan)) + " " + (await generateString("smiley", lan));
+      let ano = (await generateString("another", lan));
       response = templates.buttonMessage(
-        tipText,
-        [templates.button((await generateString("finished", lan)), 'DONE'),
-        templates.button(((await generateString("another", lan)), 'ANOTHER'))] // ez another volt
+          tipText,
+          [templates.button(fin, 'DONE'),
+          templates.button(ano, 'ANOTHER')]
       )
       break;
     case 'NO':
