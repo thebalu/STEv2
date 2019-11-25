@@ -39,10 +39,11 @@ router.get('/webhook', (req, res) => {
 
 // Creates the endpoint for our webhook
 router.post('/webhook', (req, res) => {
-
+    console.log('router.post')
     let body = req.body
 
     if (body.object === 'page') {
+        console.log("body.object == page ok")
 
         // Iterates over each entry - there may be multiple if batched
         body.entry.forEach(function (entry) {
@@ -59,6 +60,7 @@ router.post('/webhook', (req, res) => {
             // Check if the event is a message or postback and
             // pass the event to the appropriate handler function
             if (webhook_event.message) {
+                console.log("Handle message function should called")
                 handleMessage(sender_psid, webhook_event.message)
             } else if (webhook_event.postback) {
                 handlePostback(sender_psid, webhook_event.postback)
