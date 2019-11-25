@@ -254,6 +254,7 @@ async function getAndSaveUserFirstName(senderId) {
       console.log("Error getting user's name: " + error);
     } else {
       var bodyObj = JSON.parse(body);
+      console.log(bodyObj);
       name = bodyObj.first_name;
       language = bodyObj.locale;
       console.log("First name: " + name);
