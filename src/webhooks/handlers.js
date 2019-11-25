@@ -111,8 +111,14 @@ const handlePostback = async (sender_psid, received_postback) => {
         response = {text: "Gratulálok! Egyelőre kimaxoltad a kihívásokat :D Figyelj oda továbbra is, hogy betartsd a tippeket. Hamarosan továbbiakkal jelentkezek."}
       } else {
         try {
-          nextTip = await db.getNextTipForUser(sender_psid);
-          tipText = "*" + nextTip.longTitle + ":* " + nextTip.description + '\n Szólj, ha kész vagy!'
+          let nextTip = await db.getNextTipForUser(sender_psid);
+          if (user.language=='hu_HU'){
+            tipText = "*" + nextTip.longTitle + ":* " + nextTip.description + '\n Szólj, ha kész vagy!'
+          }
+          else{
+            tipText = "*" + nextTip.longTitle + ":* " + nextTip.description_en + "\n Tell me, when you're ready!"
+          }
+          
         } catch (error) {
           console.error("promise rejected " + error)
         }
@@ -127,7 +133,13 @@ const handlePostback = async (sender_psid, received_postback) => {
     case 'ANOTHER':
       try {
         nextTip = await db.getNextTipForUser(sender_psid);
-        tipText = "Rendben, itt egy másik: \n *" + nextTip.longTitle + ":* " + nextTip.description + '\n Szólj, ha kész vagy!'
+        if (user.language == 'hu_HU'){
+          tipText = "Rendben, itt egy másik: \n *" + nextTip.longTitle + ":* " + nextTip.description + '\n Szólj, ha kész vagy!'
+        }
+        else{
+          tipText = "Rendben, itt egy másik: \n *" + nextTip.longTitle + ":* " + nextTip.description_en + "\nTell me when you're ready!"
+        }
+       
       } catch (error) {
         console.error("promise rejected " + error)
       }
