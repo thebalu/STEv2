@@ -1,5 +1,10 @@
 const express = require('express')
 const router  = express.Router()
+const 
+    bodyParser = require('body-parser'),
+    app = express().use(bodyParser.json()); // creates express http server
+
+app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
 
 const {
 	handleMessage,
@@ -9,7 +14,7 @@ const {
 
 // Adds support for GET requests to our webhook
 // This is used for Facebook to connect our server
-router.get('/webhook', (req, res) => {
+app.get('/webhook', (req, res) => {
 
     // Your verify token. Should be a random string.
     let VERIFY_TOKEN = "chatbot"
@@ -38,7 +43,7 @@ router.get('/webhook', (req, res) => {
 })
 
 // Creates the endpoint for our webhook
-router.post('/webhook', (req, res) => {
+app.post('/webhook', (req, res) => {
     console.log('router.post')
     let body = req.body
 
