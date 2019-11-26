@@ -391,8 +391,8 @@ const maybeShowProgress = async (sender_psid, user, done) => {
 
 const showLaderboard = async (sender_psid, user, done) => {
   let users = await db.getAllUsers()
-  users.forEach(user_id => {
-    console.log(user_id)
+  users.forEach(name, done => {
+    console.log(name + ": " + done)
   });
 }
 
