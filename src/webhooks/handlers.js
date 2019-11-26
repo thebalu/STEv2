@@ -49,7 +49,8 @@ const handleMessage = async (sender_psid, received_message) => {
     default:
       var hi = await generateString("hi", lan)
       var smiley = await generateString("smiley", lan)
-      standardReply(sender_psid, received_message, (hi + " " + smiley + " " + generateString("whatAbout",lan)), lan);
+      var whatAbout = await generateString("whatAbout",lan)
+      standardReply(sender_psid, received_message, (hi + " " + smiley + " " + whatAbout), lan);
       break;
   }
 
