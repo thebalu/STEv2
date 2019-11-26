@@ -324,9 +324,10 @@ async function getAndSaveUserFirstName(senderId) {
       console.log("language ready")
     }
   });
-  console.log("in getAndFirstName result: " + name);
+  
   name = await waitForName()
   len = ""
+  console.log("in getAndFirstName result: " + name);
   return [name, len];
 
 }
