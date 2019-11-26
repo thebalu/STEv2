@@ -41,9 +41,10 @@ const handleMessage = async (sender_psid, received_message) => {
     case 'unsubscribe':
       db.setActive(sender_psid, false);
       var leaving = await generateString("leaving", lan)
+      var saveTheEarth = await generateString("saveTheEarth", lan)
       let response = templates.buttonMessage(
         leaving, [
-        templates.button('Mentsük meg a Földet!', 'ACTIVATE')
+        templates.button(saveTheEarth, 'ACTIVATE')
       ])
       callSendAPI(sender_psid, response);
       break;
@@ -121,7 +122,8 @@ const handlePostback = async (sender_psid, received_postback) => {
     case 'YES':
       var tipText;
       if (await db.checkFinished(sender_psid)) {
-        response = {text: "Gratulálok! Egyelőre kimaxoltad a kihívásokat :D Figyelj oda továbbra is, hogy betartsd a tippeket. Hamarosan továbbiakkal jelentkezek."}
+        finished = await generateString("finished", lan)
+        response = {text: finished}
       } else {
         try {
           let nextTip = await db.getNextTipForUser(sender_psid);
@@ -152,10 +154,10 @@ const handlePostback = async (sender_psid, received_postback) => {
         nextTip = await db.getNextTipForUser(sender_psid);
         var tipText;
         if (user.language == 'hu_HU'){
-          tipText = "Rendben, itt egy másik: \n *" + nextTip.longTitle + ":* " + nextTip.description + '\n Szólj, ha kész vagy!'
+          tipText = "Rendben, itt egy másik: \n*" + nextTip.longTitle + ":* " + nextTip.description + '\nSzólj, ha kész vagy!'
         }
         else{
-          tipText = "Rendben, itt egy másik: \n *" + nextTip.longTitle + ":* " + nextTip.description_en + "\nTell me when you're ready!"
+          tipText = "Okay, here is another: \n*" + nextTip.longTitle + ":* " + nextTip.description_en + "\nTell me when you're ready!"
         }
        
       } catch (error) {
@@ -175,7 +177,9 @@ const handlePostback = async (sender_psid, received_postback) => {
 
     case 'ACTIVATE':
       db.setActive(sender_psid, true);
-      await standardReply(sender_psid, received_postback, 'Örülök, hogy újra itt vagy, ' + user.userFirstName + '! Folytassuk onnan, ahol a múltkor abbahagytuk. Itt is van a következő kihívás:', lan)
+      var againBegin = await generateString("againBegin", lan)
+      var againEnd = await generateString("againEnd", len)
+      await standardReply(sender_psid, received_postback, againBegin + " " + user.userFirstName + againEnd, lan)
       break;
 
     case 'TIPTITLE':
@@ -323,7 +327,11 @@ var templateType = {
   "progressBegin": "14",
   "progressEnd": "15",
   "whatAbout": "16",
-  "leaving": "17"
+  "leaving": "17",
+  "saveTheEarth": "18",
+  "finished": "19",
+  "againBegin": "20",
+  "againEnd": "21"
 
 };
 
