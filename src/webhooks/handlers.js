@@ -302,7 +302,6 @@ async function waitForLan(){
 async function getAndSaveUserFirstName(senderId) {
   var request = require('request');
 
-  var language = "";
   request({
     url: "https://graph.facebook.com/v2.6/" + senderId,
     qs: {
@@ -317,18 +316,18 @@ async function getAndSaveUserFirstName(senderId) {
       var bodyObj = JSON.parse(body);
       console.log(bodyObj);
       name = bodyObj.first_name;
-      language = bodyObj.locale;
+      lan = bodyObj.locale;
       console.log("First name: " + name);
-      console.log("Language: " + language);
+      console.log("Language: " + lan);
       db.addUserName(senderId, name)
-      db.addUserLanguage(senderId, language);
+      db.addUserLanguage(senderId, lan);
       console.log("language ready")
     }
   });
   
   await waitForLan()
   console.log("in getAndFirstName result: " + name);
-  return [name, len];
+  return [name, lan];
 
 }
 
