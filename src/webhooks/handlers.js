@@ -293,6 +293,7 @@ function sleep(ms) {
 async function waitForName(){
   while (name == "" || name === undefined){
     await sleep(1000);
+    console.log("wait in waitForName where name is: " + name)
   }
   return name;
 }
@@ -324,7 +325,7 @@ async function getAndSaveUserFirstName(senderId) {
     }
   });
   
-  name = await waitForName()
+  await waitForName()
   len = ""
   console.log("in getAndFirstName result: " + name);
   return [name, len];
