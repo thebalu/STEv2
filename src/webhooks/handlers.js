@@ -49,7 +49,7 @@ const handleMessage = async (sender_psid, received_message) => {
     default:
       var hi = await generateString("hi", lan)
       var smiley = await generateString("smiley", lan)
-      standardReply(sender_psid, received_message, (hi + " " + smiley + " Hogy állsz a múltkori kihívással? Mutatom mégegyszer:"), lan);
+      standardReply(sender_psid, received_message, (hi + " " + smiley + " " + generateString("whatAbout",lan)), lan);
       break;
   }
 
@@ -318,7 +318,8 @@ var templateType = {
   "sorry": "12",
   "seeYou": "13",
   "progressBegin": "14",
-  "progressEnd": "15"
+  "progressEnd": "15",
+  "whatAbout": "16"
 
 };
 
