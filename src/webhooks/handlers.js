@@ -291,7 +291,7 @@ function sleep(ms) {
 }
 
 async function waitForName(){
-  while (name == ""){
+  while (name == "" || name === undefined){
     await sleep(1000);
   }
   return name;
