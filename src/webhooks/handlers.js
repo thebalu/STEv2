@@ -81,12 +81,12 @@ const handlePostback = async (sender_psid, received_postback) => {
   }
   console.log("Getting user data from database.")
   var user = (await db.getUser(sender_psid))
-  //let lan = user.language;
-  lan = "en_EN"
+  let lan = user.language;
   switch (payload) {
     case 'GET_STARTED':
       console.log("GETSTARTED")
       console.log(user)
+      console.log(lan)
       
       response = templates.buttonMessage(
         (await (generateString("intro_short", lan))), [
@@ -119,9 +119,6 @@ const handlePostback = async (sender_psid, received_postback) => {
           templates.button((await(generateString("enough", lan))), 'NO')]
         )
       }
-
-
-      
       break;
 
     case 'YES':
