@@ -398,7 +398,6 @@ const showLaderboard = async (sender_psid, user, done) => {
   var results = new Map;
   users.forEach(async (user_id) => {
     my_user = await db.getUser(user_id)
-    console.log(my_user)
     results.set(my_user.done, my_user.name);
   });
   results.forEach(writeResults);
