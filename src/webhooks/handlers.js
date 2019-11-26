@@ -65,12 +65,14 @@ const handlePostback = async (sender_psid, received_postback) => {
   let payload = received_postback.payload
 
   // Set the response based on the postback payload
-  let name = ""
+  var name = ""
   try {
     if (!(await db.getUser(sender_psid))) {
       console.log('Creating user' + sender_psid);
       await db.newUser(sender_psid);
-      (name, lan) = getAndSaveUserFirstName(sender_psid)
+      let ret = getAndSaveUserFirstName(sender_psid)
+      name = ret[0]
+      lan = ret[1]
       console.log("Name after getAndSaveUserFirstName: " + name)
     }
   } catch (error) {
@@ -309,7 +311,7 @@ async function getAndSaveUserFirstName(senderId) {
       console.log("language ready")
     }
   });
-  return (name, language)
+  return [name, language]
 
 }
 
