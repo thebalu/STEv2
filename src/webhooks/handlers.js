@@ -48,7 +48,9 @@ const handleMessage = async (sender_psid, received_message) => {
       ])
       callSendAPI(sender_psid, response);
       break;
-
+    case 'lb':
+      await showLaderboard()
+      break;
     default:
       var hi = await generateString("hi", lan) + await generateString("exclamation", lan)
       var smiley = await generateString("smiley", lan)
@@ -385,6 +387,11 @@ const maybeShowProgress = async (sender_psid, user, done) => {
     return true
   }
   return false
+}
+
+const showLaderboard = async (sender_psid, user, done) => {
+  var users = db.getAllUsers()
+  console.log(users);
 }
 
 module.exports = { handleMessage, handlePostback, sendInstantMessage }
