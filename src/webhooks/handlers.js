@@ -38,9 +38,11 @@ const handleMessage = async (sender_psid, received_message) => {
   else switch (received_message.text) {
 
     case 'leiratkozás':
+    case 'unsubscribe':
       db.setActive(sender_psid, false);
+      var leaving = await generateString("leaving", lan)
       let response = templates.buttonMessage(
-        'Sajnálom, hogy itt hagysz engem. Ha meggondolnád magad, és van kedved segíteni rajtam, kattints a gombra!', [
+        leaving, [
         templates.button('Mentsük meg a Földet!', 'ACTIVATE')
       ])
       callSendAPI(sender_psid, response);
@@ -320,7 +322,8 @@ var templateType = {
   "seeYou": "13",
   "progressBegin": "14",
   "progressEnd": "15",
-  "whatAbout": "16"
+  "whatAbout": "16",
+  "leaving": "17"
 
 };
 
