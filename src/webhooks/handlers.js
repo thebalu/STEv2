@@ -122,7 +122,7 @@ const handlePostback = async (sender_psid, received_postback) => {
     case 'YES':
       var tipText;
       if (await db.checkFinished(sender_psid)) {
-        finished = await generateString("finished", lan)
+        finished = await generateString("finishedAll", lan)
         response = {text: finished}
       } else {
         try {
@@ -329,7 +329,7 @@ var templateType = {
   "whatAbout": "16",
   "leaving": "17",
   "saveTheEarth": "18",
-  "finished": "19",
+  "finishedAll": "19",
   "againBegin": "20",
   "againEnd": "21"
 
