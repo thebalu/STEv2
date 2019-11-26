@@ -79,9 +79,12 @@ const handlePostback = async (sender_psid, received_postback) => {
   } catch (error) {
     console.error("Promise rejected" + error)
   }
-  console.log("Getting user data from database.")
-  var user = (await db.getUser(sender_psid))
-  lan = user.language;
+  if (name == ""){
+    console.log("Getting user data from database.")
+    var user = (await db.getUser(sender_psid))
+    lan = user.language;
+  }
+  
   switch (payload) {
     case 'GET_STARTED':
       console.log("GETSTARTED")
