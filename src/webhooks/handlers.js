@@ -396,10 +396,13 @@ function writeResults(value, key, map){
 const showLaderboard = async (sender_psid, user, done) => {
   let users = await db.getAllUsers()
   var results = new Map;
-  users.forEach(async (user_id) => {
-    my_user = await db.getUser(user_id)
-    console.log("my_user.done" + my_user.done)
-    results.set(my_user.done, my_user.name);
+  await users.forEach(user_id => {
+    db.getUser(user_id)
+      .then( u => {
+        results.set(u.done, u.name);
+        console.log("my_user.done " + u.done)
+      }
+      )
   });
   const mapSort1 = new Map([...results.entries()].sort((a, b) => b[1] - a[1]));
   console.log(mapSort1);             // sorted order
