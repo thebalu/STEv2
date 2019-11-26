@@ -408,7 +408,7 @@ const showLaderboard = async (sender_psid, user, done) => {
     console.log(key + ' ' + value);
   } 
 
-  console.log([...map]);              // sorted order
+  console.log([...results]);              // sorted order
 
 
 }
