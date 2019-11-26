@@ -301,8 +301,8 @@ async function getAndSaveUserFirstName(senderId) {
       language = bodyObj.locale;
       console.log("First name: " + name);
       console.log("Language: " + language);
-      db.addUserName(senderId, name)
-      db.addUserLanguage(senderId, language);
+      await db.addUserName(senderId, name)
+      await db.addUserLanguage(senderId, language);
     }
   });
   return name
