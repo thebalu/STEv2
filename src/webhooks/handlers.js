@@ -389,12 +389,21 @@ const maybeShowProgress = async (sender_psid, user, done) => {
   return false
 }
 
+function writeResults(value, key, map){
+  console.log(`m[${key}] = ${value}`);
+}
+
 const showLaderboard = async (sender_psid, user, done) => {
   let users = await db.getAllUsers()
+  var results = new SortedMap;
   users.forEach(async (user_id) => {
     my_user = await db.getUser(user_id)
     console.log(my_user)
+    results.set(my_user.done, my_user.name);
   });
+  results.forEach(writeResults);
+
+
 }
 
 module.exports = { handleMessage, handlePostback, sendInstantMessage }
