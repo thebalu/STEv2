@@ -75,6 +75,7 @@ const handlePostback = async (sender_psid, received_postback) => {
   } catch (error) {
     console.error("Promise rejected" + error)
   }
+  console.log("Getting user data from database.")
   var user = (await db.getUser(sender_psid))
   let lan = user.language;
 
@@ -303,6 +304,7 @@ async function getAndSaveUserFirstName(senderId) {
       console.log("Language: " + language);
       await db.addUserName(senderId, name)
       await db.addUserLanguage(senderId, language);
+      conbsole.log("language ready")
     }
   });
   return name
