@@ -393,7 +393,7 @@ const showLaderboard = async (sender_psid, user, done) => {
   let users = await db.getAllUsers()
   users.forEach(async (user_id) => {
     my_user = await db.getUser(user_id)
-
+    console.log(my_user)
   });
 }
 
