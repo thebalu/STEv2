@@ -50,7 +50,7 @@ const handleMessage = async (sender_psid, received_message) => {
       break;
 
     default:
-      var hi = await generateString("hi", lan)
+      var hi = await generateString("hi", lan) + await generateString("exclamation", lan)
       var smiley = await generateString("smiley", lan)
       var whatAbout = await generateString("whatAbout",lan)
       standardReply(sender_psid, received_message, (hi + " " + smiley + " " + whatAbout), lan);
@@ -82,7 +82,7 @@ const handlePostback = async (sender_psid, received_postback) => {
   if (name == ""){
     console.log("Getting user data from database.")
     var user = (await db.getUser(sender_psid))
-    lan = user.language;
+  lan = user.language;
   }
   
   switch (payload) {
@@ -90,9 +90,10 @@ const handlePostback = async (sender_psid, received_postback) => {
       console.log("GETSTARTED")
       console.log(user)
       console.log(lan)
-      
+      hi = await generateString("hi", lan) + " " + name + await generateString("exclamation");
+
       response = templates.buttonMessage(
-        (await (generateString("intro_short", lan))), [
+        (hi + await (generateString("intro_short", lan))), [
         templates.button((await (generateString("yes", lan))) + (await generateString("exclamation", lan)) + " " + (await generateString("smiley", lan)), 'YES'),
         templates.button((await (generateString("more_intro", lan))), 'HELP')
 
