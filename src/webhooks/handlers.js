@@ -47,9 +47,13 @@ const handleMessage = async (sender_psid, received_message) => {
       break;
 
     default:
-      
-        generateString("smiley")
-        .then(sm => standardReply(sender_psid, received_message, ("Szia! " + sm + " Hogy állsz a múltkori kihívással? Mutatom mégegyszer:"), lan));
+      var hi;
+      var sm;
+      generateString("hi", lan)
+        .then (h => hi = h);
+      generateString("smiley", lan)
+        .then (s => sm = s)
+      standardReply(sender_psid, received_message, (hi + " " + sm + " Hogy állsz a múltkori kihívással? Mutatom mégegyszer:"), lan);
       break;
   }
 
