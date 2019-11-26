@@ -90,7 +90,7 @@ const handlePostback = async (sender_psid, received_postback) => {
       console.log("GETSTARTED")
       console.log(user)
       console.log(lan)
-      hi = await generateString("hi", lan) + " " + name + await generateString("exclamation");
+      hi = await generateString("hi", lan) + " " + name + await generateString("exclamation") + " ";
 
       response = templates.buttonMessage(
         (hi + await (generateString("intro_short", lan))), [
