@@ -292,7 +292,7 @@ async function getAndSaveUserFirstName(senderId) {
       fields: "first_name, locale"
     },
     method: "GET"
-  }, await async function (error, response, body) {
+  }, function (error, response, body) {
     if (error) {
       console.log("Error getting user's name: " + error);
     } else {
@@ -302,8 +302,8 @@ async function getAndSaveUserFirstName(senderId) {
       language = bodyObj.locale;
       console.log("First name: " + name);
       console.log("Language: " + language);
-      await db.addUserName(senderId, name)
-      await db.addUserLanguage(senderId, language);
+      db.addUserName(senderId, name)
+      db.addUserLanguage(senderId, language);
       console.log("language ready")
     }
   });
