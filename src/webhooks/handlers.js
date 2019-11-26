@@ -132,7 +132,7 @@ const handlePostback = async (sender_psid, received_postback) => {
             tipText = "*" + nextTip.longTitle + ":* " + nextTip.description + '\nSzólj, ha kész vagy!'
           }
           else{
-            tipText = "*" + nextTip.longTitle + ":* " + nextTip.description_en + "\nTell me, when you're ready!"
+            tipText = "*" + nextTip.longTitle_en + ":* " + nextTip.description_en + "\nTell me, when you're ready!"
           }
           
         } catch (error) {
@@ -157,7 +157,7 @@ const handlePostback = async (sender_psid, received_postback) => {
           tipText = "Rendben, itt egy másik: \n*" + nextTip.longTitle + ":* " + nextTip.description + '\nSzólj, ha kész vagy!'
         }
         else{
-          tipText = "Okay, here is another: \n*" + nextTip.longTitle + ":* " + nextTip.description_en + "\nTell me when you're ready!"
+          tipText = "Okay, here is another: \n*" + nextTip.longTitle_en + ":* " + nextTip.description_en + "\nTell me when you're ready!"
         }
        
       } catch (error) {
@@ -239,7 +239,7 @@ const standardReply = async (sender_psid, received_message, before_text, lan) =>
     tipText = "*" + currentTip.longTitle + ":* " + currentTip.description + '\nSzólj, ha kész vagy!'
   }
   else{
-    tipText = "*" + currentTip.longTitle + ":* " + currentTip.description_en + "\nTell me when you're done!"
+    tipText = "*" + currentTip.longTitle_en + ":* " + currentTip.description_en + "\nTell me when you're done!"
   }
   
 
