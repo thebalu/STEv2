@@ -390,8 +390,10 @@ const maybeShowProgress = async (sender_psid, user, done) => {
 }
 
 const showLaderboard = async (sender_psid, user, done) => {
-  var users = await db.getAllUsers()
-  console.log(users[0].name);
+  let users = await db.getAllUsers()
+  users.forEach(user_id => {
+    console.log(user_id)
+  });
 }
 
 module.exports = { handleMessage, handlePostback, sendInstantMessage }
