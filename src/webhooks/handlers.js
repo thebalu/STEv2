@@ -16,7 +16,7 @@ const handleMessage = async (sender_psid, received_message) => {
   //         user = u;
   //         console.log("set user," + user);
   //       });
-  console.log(user);
+  console.log("User: " + user);
   var lan = user.language;
   if (titleAdded) {
     titleAdded = false
