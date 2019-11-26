@@ -400,7 +400,15 @@ const showLaderboard = async (sender_psid, user, done) => {
     my_user = await db.getUser(user_id)
     results.set(my_user.done, my_user.name);
   });
-  results.forEach(writeResults);
+  results[Symbol.iterator] = function* () {
+    yield* [...this.entries()].sort((a, b) => a[1] - b[1]);
+  }
+
+  for (let [key, value] of results) {     // get data sorted
+    console.log(key + ' ' + value);
+  } 
+
+  console.log([...map]);              // sorted order
 
 
 }
