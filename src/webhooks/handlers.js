@@ -304,7 +304,7 @@ async function getAndSaveUserFirstName(senderId) {
       console.log("Language: " + language);
       await db.addUserName(senderId, name)
       await db.addUserLanguage(senderId, language);
-      conbsole.log("language ready")
+      console.log("language ready")
     }
   });
   return name
