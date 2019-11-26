@@ -286,6 +286,10 @@ const sendInstantMessage = async (req, res) => {
 
 var name = "";
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 async function waitForName(){
   while (name == ""){
     await sleep(1000);
