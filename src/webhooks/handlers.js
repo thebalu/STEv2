@@ -284,6 +284,15 @@ const sendInstantMessage = async (req, res) => {
   }
 }
 
+var name = "";
+
+async function waitForName(){
+  while (name == ""){
+
+  }
+  return name;
+}
+
 async function getAndSaveUserFirstName(senderId) {
   var request = require('request');
 
@@ -312,7 +321,9 @@ async function getAndSaveUserFirstName(senderId) {
     }
   });
   console.log("in getAndFirstName result: " + name);
-  return [name, language]
+  name = await waitForName()
+  len = ""
+  return [name, len];
 
 }
 
