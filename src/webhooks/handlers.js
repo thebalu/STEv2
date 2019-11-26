@@ -300,7 +300,6 @@ async function waitForName(){
 async function getAndSaveUserFirstName(senderId) {
   var request = require('request');
 
-  var name = "";
   var language = "";
   request({
     url: "https://graph.facebook.com/v2.6/" + senderId,
