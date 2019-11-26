@@ -81,7 +81,7 @@ const handlePostback = async (sender_psid, received_postback) => {
   }
   console.log("Getting user data from database.")
   var user = (await db.getUser(sender_psid))
-  let lan = user.language;
+  lan = user.language;
   switch (payload) {
     case 'GET_STARTED':
       console.log("GETSTARTED")
