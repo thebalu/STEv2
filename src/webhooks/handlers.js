@@ -311,6 +311,7 @@ async function getAndSaveUserFirstName(senderId) {
       console.log("language ready")
     }
   });
+  console.log("in getAndFirstName result: " + name);
   return [name, language]
 
 }
