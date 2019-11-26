@@ -61,6 +61,7 @@ router.post('/webhook', (req, res) => {
             // pass the event to the appropriate handler function
             if (webhook_event.message) {
                 console.log("Handle message function should called")
+                // res.status(200).send('EVENT_RECEIVED')
                 handleMessage(sender_psid, webhook_event.message)
             } else if (webhook_event.postback) {
                 handlePostback(sender_psid, webhook_event.postback)

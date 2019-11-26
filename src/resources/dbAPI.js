@@ -12,7 +12,8 @@ const newUser = async (userId) => {
     id: userId,
     lastSeen: 0,
     active: true,
-    done: 0
+    done: 0,
+    language:'undef'
   })
 }
 

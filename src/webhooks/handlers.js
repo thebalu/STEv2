@@ -8,11 +8,15 @@ let descriptionAdded = false
 let title
 let tipDescription
 
-const handleMessage = (sender_psid, received_message) => {
+const handleMessage = async (sender_psid, received_message) => {
   console.log("Received message: " + received_message.text)
-  var user;
-  db.getUser(sender_psid)
-        .then(u => user = u);
+  let user = await db.getUser(sender_psid);
+  // db.getUser(sender_psid)
+  //       .then(u => {
+  //         user = u;
+  //         console.log("set user," + user);
+  //       });
+  console.log(user);
   var lan = user.language;
   if (titleAdded) {
     titleAdded = false
@@ -44,8 +48,8 @@ const handleMessage = (sender_psid, received_message) => {
 
     default:
       
-        gernarateString("smiley")
-        .then(sm => standardReply(sender_psid, received_message, ("Szia! " + sm + " Hogy állsz a múltkori kihívással? Mutatom mégegyszer:")));
+        generateString("smiley")
+        .then(sm => standardReply(sender_psid, received_message, ("Szia! " + sm + " Hogy állsz a múltkori kihívással? Mutatom mégegyszer:"), lan));
       break;
   }
 
@@ -168,7 +172,7 @@ const handlePostback = async (sender_psid, received_postback) => {
 
     case 'ACTIVATE':
       db.setActive(sender_psid, true);
-      standardReply(sender_psid, received_postback, 'Örülök, hogy újra itt vagy, ' + user.userFirstName + '! Folytassuk onnan, ahol a múltkor abbahagytuk. Itt is van a következő kihívás:')
+      await standardReply(sender_psid, received_postback, 'Örülök, hogy újra itt vagy, ' + user.userFirstName + '! Folytassuk onnan, ahol a múltkor abbahagytuk. Itt is van a következő kihívás:', lan)
       break;
 
     case 'TIPTITLE':
@@ -180,7 +184,7 @@ const handlePostback = async (sender_psid, received_postback) => {
       response = { "text": 'A kihívásod mentésre került.' };
       break;
     case 'DISCARDNEWTIP':
-      standardReply(sender_psid, received_postback, 'Jöhet még egy kihívás? :)')
+      await standardReply(sender_psid, received_postback, 'Jöhet még egy kihívás? :)', lan)
       break;
   }
 
@@ -201,7 +205,7 @@ const callSendAPI = (sender_psid, response, cb = null) => {
   // Send the HTTP request to the Messenger Platform
   request({
     "uri": "https://graph.facebook.com/v2.6/me/messages",
-    "qs": { "access_token": config.get('Facebook.access_token') },
+    "qs": { access_token: config.get('Facebook.access_token')},
     "method": "POST",
     "json": request_body
   }, (err, res, body) => {
@@ -217,14 +221,20 @@ const callSendAPI = (sender_psid, response, cb = null) => {
 }
 
 
-const standardReply = async (sender_psid, received_message, before_text) => {
+const standardReply = async (sender_psid, received_message, before_text, lan) => {
   let response1 = { "text": before_text }
   try {
     currentTip = await db.getCurrentTipForUser(sender_psid);
   } catch (error) {
     console.error("Promise rejected" + error);
   }
-  tipText = "*" + currentTip.longTitle + ":* " + currentTip.description + '\n Szólj, ha kész vagy!'
+  if (lan=='hu_HU'){
+    tipText = "*" + currentTip.longTitle + ":* " + currentTip.description + '\nSzólj, ha kész vagy!'
+  }
+  else{
+    tipText = "*" + currentTip.longTitle + ":* " + currentTip.description_en + "\nTell me when you're done!"
+  }
+  
 
   response2 = templates.buttonMessage(
     tipText,
