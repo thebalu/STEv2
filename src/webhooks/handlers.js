@@ -288,7 +288,7 @@ var name = "";
 
 async function waitForName(){
   while (name == ""){
-
+    await sleep(1000);
   }
   return name;
 }
