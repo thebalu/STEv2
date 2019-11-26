@@ -396,7 +396,7 @@ function writeResults(value, key, map){
 const showLaderboard = async (sender_psid, user, done) => {
   let users = await db.getAllUsers()
   var results = new Map;
-  users.forEach(user_id => {
+  var fe = users.forEach(user_id => {
     db.getUser(user_id)
       .then( u => {
         results.set(u.done, u.name);
@@ -404,8 +404,14 @@ const showLaderboard = async (sender_psid, user, done) => {
       }
       )
   });
-  const mapSort1 = new Map([...results.entries()].sort((a, b) => b[1] - a[1]));
-  console.log("mapSort1: " + mapSort1);             // sorted order
+
+  fe.then(() => {
+    const mapSort1 = new Map([...results.entries()].sort((a, b) => b[1] - a[1]));
+    console.log("mapSort1: " + mapSort1);             // sorted order
+  }
+
+  )
+  
 
 
 }
