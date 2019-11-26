@@ -17,13 +17,13 @@ const newUser = async (userId) => {
   })
 }
 
-const addUserName = (userId, userFirstName) => {
+const addUserName = async (userId, userFirstName) => {
   db.collection('users').doc(String(userId)).update({
     userFirstName: userFirstName
   })
 }
 
-const addUserLanguage = (userId, userLanguage) => {
+const addUserLanguage = async (userId, userLanguage) => {
   db.collection('users').doc(String(userId)).update({
     language: userLanguage
   })

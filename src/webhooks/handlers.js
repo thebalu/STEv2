@@ -70,7 +70,8 @@ const handlePostback = async (sender_psid, received_postback) => {
     if (!(await db.getUser(sender_psid))) {
       console.log('Creating user' + sender_psid);
       await db.newUser(sender_psid);
-      await getAndSaveUserFirstName(sender_psid)
+      (name, lan) = getAndSaveUserFirstName(sender_psid)
+      console.log("Name after getAndSaveUserFirstName: " + name)
     }
   } catch (error) {
     console.error("Promise rejected" + error)
@@ -285,7 +286,8 @@ async function getAndSaveUserFirstName(senderId) {
   var request = require('request');
 
   var name = "";
-  await request({
+  var language = "";
+  request({
     url: "https://graph.facebook.com/v2.6/" + senderId,
     qs: {
       access_token: config.get('Facebook.access_token'),
@@ -307,7 +309,7 @@ async function getAndSaveUserFirstName(senderId) {
       console.log("language ready")
     }
   });
-  return name
+  return (name, language)
 
 }
 
