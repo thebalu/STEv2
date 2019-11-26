@@ -178,7 +178,7 @@ const handlePostback = async (sender_psid, received_postback) => {
     case 'ACTIVATE':
       db.setActive(sender_psid, true);
       var againBegin = await generateString("againBegin", lan)
-      var againEnd = await generateString("againEnd", len)
+      var againEnd = await generateString("againEnd", lan)
       await standardReply(sender_psid, received_postback, againBegin + " " + user.userFirstName + againEnd, lan)
       break;
 
