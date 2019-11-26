@@ -291,7 +291,7 @@ async function getAndSaveUserFirstName(senderId) {
       fields: "first_name, locale"
     },
     method: "GET"
-  }, async function (error, response, body) {
+  }, await async function (error, response, body) {
     if (error) {
       console.log("Error getting user's name: " + error);
     } else {
