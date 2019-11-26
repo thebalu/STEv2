@@ -66,6 +66,7 @@ const handlePostback = async (sender_psid, received_postback) => {
 
   // Set the response based on the postback payload
   var name = ""
+  var lan = ""
   try {
     if (!(await db.getUser(sender_psid))) {
       console.log('Creating user' + sender_psid);
@@ -284,18 +285,18 @@ const sendInstantMessage = async (req, res) => {
   }
 }
 
+var lan = "";
 var name = "";
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function waitForName(){
-  while (name == "" || name === undefined){
-    await sleep(1000);
-    console.log("wait in waitForName where name is: " + name)
+async function waitForLan(){
+  while (lan == "" || lan === undefined){
+    await sleep(100);
+    console.log("wait in waitForLan where lan is: " + lan)
   }
-  return name;
 }
 
 async function getAndSaveUserFirstName(senderId) {
@@ -325,8 +326,7 @@ async function getAndSaveUserFirstName(senderId) {
     }
   });
   
-  await waitForName()
-  len = ""
+  await waitForLan()
   console.log("in getAndFirstName result: " + name);
   return [name, len];
 
