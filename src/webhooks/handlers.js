@@ -391,7 +391,7 @@ const maybeShowProgress = async (sender_psid, user, done) => {
 
 const showLaderboard = async (sender_psid, user, done) => {
   var users = db.getAllUsers()
-  console.log(users[0]);
+  console.log(users[0].name);
 }
 
 module.exports = { handleMessage, handlePostback, sendInstantMessage }
