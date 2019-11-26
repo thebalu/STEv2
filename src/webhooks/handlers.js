@@ -178,7 +178,7 @@ const handlePostback = async (sender_psid, received_postback) => {
       )
       break;
     case 'NO':
-      response = { "text": (await generateString("sorry", lan)) + ", " + user.userFirstName + '. ' + (await generateString("seeYou")) + (await generateString("exclamation")) + (await generateString("smiley")) }
+      response = { "text": (await generateString("sorry", lan)) + ", " + user.userFirstName + '. ' + (await generateString("seeYou", len)) + (await generateString("exclamation")) + (await generateString("smiley")) }
       break;
 
     case 'ACTIVATE':
