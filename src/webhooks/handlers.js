@@ -71,7 +71,7 @@ const handlePostback = async (sender_psid, received_postback) => {
     if (!(await db.getUser(sender_psid))) {
       console.log('Creating user' + sender_psid);
       await db.newUser(sender_psid);
-      let ret = getAndSaveUserFirstName(sender_psid)
+      let ret = await getAndSaveUserFirstName(sender_psid)
       name = ret[0]
       lan = ret[1]
       console.log("Name after getAndSaveUserFirstName: " + name)
