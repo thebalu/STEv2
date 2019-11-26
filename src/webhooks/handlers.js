@@ -390,7 +390,7 @@ const maybeShowProgress = async (sender_psid, user, done) => {
 }
 
 const showLaderboard = async (sender_psid, user, done) => {
-  var users = db.getAllUsers()
+  var users = await db.getAllUsers()
   console.log(users[0].name);
 }
 
