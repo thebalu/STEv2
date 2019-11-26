@@ -2,6 +2,7 @@ const templates = require('./templates')
 const db = require('../resources/dbAPI')
 const request = require('request')
 const config = require('config')
+const SortedMap = require("collections/sorted-map");
 
 let titleAdded = false
 let descriptionAdded = false
