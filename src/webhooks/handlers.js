@@ -49,7 +49,7 @@ const handleMessage = async (sender_psid, received_message) => {
       callSendAPI(sender_psid, response);
       break;
     case 'lb':
-      await showLaderboard()
+      await showLaderboard(sender_psid, user)
       break;
     default:
       var hi = await generateString("hi", lan) + await generateString("exclamation", lan)
@@ -356,8 +356,12 @@ var templateType = {
   "saveTheEarth": "18",
   "finishedAll": "19",
   "againBegin": "20",
-  "againEnd": "21"
-
+  "againEnd": "21",
+  "point": "23",
+  "laderboard": "24",
+  "laderboard_intro_begin":"25",
+  "laderboard_intro_end":"26",
+  "you":"27"
 };
 
 const generateString = async (s, userLanguage) => {
@@ -389,11 +393,38 @@ const maybeShowProgress = async (sender_psid, user, done) => {
   return false
 }
 
-function writeResults(value, key, map){
-  console.log(`m[${key}] = ${value}`);
+// Csak így tovább, Ábel, mutatom az eredményeket:
+// RANGLISTA:
+// 1. Ábel --- 18 pont
+// 2. Béla --- 17 pont
+
+// laderboard_intro_begin, Ábel, laderboard_intro_end:
+// laderboard
+// 1. Ábel --- 18 point
+// 2. Béla --- 17 point
+
+async function writeResults(sender_psid, user, users_data){
+  var finalString = "";
+  var lan = user.language;
+  finalString += await generateString(laderboard_intro_begin, lan) + ", ";
+  finalString += user.name + ", " + await generateString(laderboard_intro_end, lan) + ":\n";
+  finalString += await generateString(laderboard, lan) + "\n";
+  for (let i = 0; i < users_data.length; i++) {
+    const current = users_data[i];
+    finalString += i + ". "
+    if (current.id == user.id){
+      finalString += await generateString("you", lan);
+    }
+    else{
+      finalString += current.userFirstName;
+    }
+    finalString += " --- " + current.done + " ";
+    finalString += await generateString("points", lan) + "\n"
+  }
+  console.log(finalString);
 }
 
-const showLaderboard = async (sender_psid, user, done) => {
+const showLaderboard = async (sender_psid, user) => {
   let users = await db.getAllUsers()
   var results = new Map();
   var users_data = [];
@@ -407,6 +438,7 @@ const showLaderboard = async (sender_psid, user, done) => {
   console.log("users_data: " + JSON.stringify(users_data))
   users_data.sort((a,b) => (parseInt(a.done) < parseInt(b.done)) ? 1 : -1)
   console.log("users_data: " + JSON.stringify(users_data))
+  await writeResults(sender_psid, user, users_data)
 }
 
 module.exports = { handleMessage, handlePostback, sendInstantMessage }
