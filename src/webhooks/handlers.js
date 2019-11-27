@@ -407,32 +407,6 @@ const showLaderboard = async (sender_psid, user, done) => {
   console.log("users_data: " + JSON.stringify(users_data))
   users_data.sort((a,b) => (parseInt(a.done) < parseInt(b.done)) ? 1 : -1)
   console.log("users_data: " + JSON.stringify(users_data))
-
-  /*var fe = await new Promise ((resolve, reject) => {
-    users.forEach(user_id => {
-      db.getUser(user_id)
-        .then( u => {
-          results.set(u.done, u.name);
-          console.log("my_user.done " + u.done)
-        }
-        )
-    });
-  })*/
-  /*fe.then(()=>{
-    console.log("after FE")
-  })*/
-  console.log("after FE")
-  /*await fe.then(() => {
-    console.log("map sort started")
-    const mapSort1 = new Map([...results.entries()].sort((a, b) => b[1] - a[1]));
-    console.log("mapSort1: ");             // sorted order
-    console.log(JSON.stringify(mapSort1))
-  }
-
-  )*/
-  
-
-
 }
 
 module.exports = { handleMessage, handlePostback, sendInstantMessage }
