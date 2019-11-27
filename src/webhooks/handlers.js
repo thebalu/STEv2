@@ -414,16 +414,25 @@ async function writeResults(sender_psid, user, users_data){
   finalString += user.userFirstName + ", " + await generateString("leaderboard_intro_end", lan) + ":\n";
   finalString += await generateString("leaderboard", lan) + "\n";
   for (let i = 0; i < users_data.length; i++) {
+    var allLength = 0
     const current = users_data[i];
     finalString += (i+1) + ". "
+    allLength += (i+1).toString().length
     if (current.id == user.id){
-      finalString += await generateString("you", lan);
+      const name = await generateString("you", lan);
+      finalString += name
+      allLength += name.length
     }
     else{
       finalString += current.userFirstName;
+      allLength += current.userFirstName.length
     }
-    finalString += " --- " + current.done + " ";
-    finalString += await generateString("point", lan) + "\n"
+    allLength += current.done.toString().length 
+    const point = await generateString("point", lan)
+    allLength += point.length
+    var kotojel = "-"
+    finalString += " " + kotojel.repeat(10-allLength) +" " + current.done + " ";
+    finalString += point + "\n"
   }
   console.log(finalString);
   callSendAPI (sender_psid, {text: finalString})
