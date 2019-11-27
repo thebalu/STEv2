@@ -401,8 +401,11 @@ const showLaderboard = async (sender_psid, user, done) => {
     const user_id = users[i];
     const user = await db.getUser(user_id);
     console.log(user.userFirstName +': ' + user.done);
-    
+    results.set(user.done, user.userFirstName);
   }
+  const sortedResult = new Map([...results.entries()].sort((a, b) => b[1] - a[1]));
+  console.log(JSON.stringify(sortedResult))
+
   /*var fe = await new Promise ((resolve, reject) => {
     users.forEach(user_id => {
       db.getUser(user_id)
