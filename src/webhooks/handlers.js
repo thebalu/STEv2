@@ -419,7 +419,7 @@ async function writeResults(sender_psid, user, users_data){
       finalString += current.userFirstName;
     }
     finalString += " --- " + current.done + " ";
-    finalString += await generateString("points", lan) + "\n"
+    finalString += await generateString("point", lan) + "\n"
   }
   console.log(finalString);
 }
