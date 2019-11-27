@@ -396,17 +396,17 @@ function writeResults(value, key, map){
 const showLaderboard = async (sender_psid, user, done) => {
   let users = await db.getAllUsers()
   var results = new Map();
+  var users_data = [];
   console.log("stringify: " + JSON.stringify(users))
   for (let i = 0; i < users.length; i++) {
     const user_id = users[i];
     const user = await db.getUser(user_id);
     console.log(user.userFirstName +': ' + user.done);
-    results.set(user.done, user.userFirstName);
-    console.log("result: " + JSON.stringify(results))
+    users_data.push(user);
   }
-  console.log("result: " + JSON.stringify(results))
-  const sortedResult =  new Map([...results.entries()].sort((a, b) => b[1] - a[1]));
-  console.log("sortedResult: " + JSON.stringify(sortedResult))
+  console.log("users_data: " + JSON.stringify(users_data))
+ 
+  console.log("users_data: " + JSON.stringify(users_data))
 
   /*var fe = await new Promise ((resolve, reject) => {
     users.forEach(user_id => {
