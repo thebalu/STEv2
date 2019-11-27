@@ -407,7 +407,7 @@ async function writeResults(sender_psid, user, users_data){
   var finalString = "";
   var lan = user.language;
   finalString += await generateString("laderboard_intro_begin", lan) + ", ";
-  finalString += user.name + ", " + await generateString("laderboard_intro_end", lan) + ":\n";
+  finalString += user.userFirstName + ", " + await generateString("laderboard_intro_end", lan) + ":\n";
   finalString += await generateString("laderboard", lan) + "\n";
   for (let i = 0; i < users_data.length; i++) {
     const current = users_data[i];
@@ -421,12 +421,13 @@ async function writeResults(sender_psid, user, users_data){
     finalString += " --- " + current.done + " ";
     finalString += await generateString("point", lan) + "\n"
   }
+  finalString += "\n\n" + (await generateString("readyForAnother", lan))
   console.log(finalString);
   response = templates.buttonMessage(
-    (finalString), [
-    templates.button((await (generateString("yes", lan))) + (await generateString("exclamation", lan)) + " " + (await generateString("smiley", lan)), 'YES')
-
-  ])
+    finalString,
+    [templates.button((await(generateString("yes", lan))) + (await generateString("exclamation", lan)) + " " + (await generateString("smiley", lan)), 'YES'),
+    templates.button((await(generateString("enough", lan))), 'NO')]
+  )
   callSendAPI(sender_psid, response)
 }
 
