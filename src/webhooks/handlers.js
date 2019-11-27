@@ -396,7 +396,7 @@ function writeResults(value, key, map){
 const showLaderboard = async (sender_psid, user, done) => {
   let users = await db.getAllUsers()
   var results = new Map;
-  var fe = new Promise ((resolve, reject) => {
+  var fe = await new Promise ((resolve, reject) => {
     users.forEach(user_id => {
       db.getUser(user_id)
         .then( u => {
