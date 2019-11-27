@@ -431,7 +431,7 @@ async function writeResults(sender_psid, user, users_data){
     const point = await generateString("point", lan)
     allLength += point.length
     var kotojel = "-"
-    if (10-allLength > 0) {
+    if (20-allLength > 0) {
       finalString += " " + kotojel.repeat(20-allLength) +" " + current.done + " ";
     }
     else{
