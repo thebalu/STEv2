@@ -395,7 +395,7 @@ function writeResults(value, key, map){
 
 const showLaderboard = async (sender_psid, user, done) => {
   let users = await db.getAllUsers()
-  var results = new Map;
+  var results = new Map();
   console.log("stringify: " + JSON.stringify(users))
   for (let i = 0; i < users.length; i++) {
     const user_id = users[i];
