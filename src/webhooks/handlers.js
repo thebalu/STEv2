@@ -379,7 +379,7 @@ const generateString = async (s, userLanguage) => {
 }
 
 const maybeShowProgress = async (sender_psid, user, done) => {
-  var r = Math.floor(Math.random() * 3)
+  var r = Math.floor(Math.random() * 6)
   console.log("showing progress")
   var lan = user.language;
   if (r==1){
@@ -389,6 +389,9 @@ const maybeShowProgress = async (sender_psid, user, done) => {
     progE = await generateString("progressEnd", lan)
     callSendAPI (sender_psid, {text: good + " "+ user.userFirstName + "! " + smiley + " " + progB + " " + done + " " + progE + " " + smiley})
     return true
+  }
+  if (r==2){
+    showLaderboard(sender_psid, user);
   }
   return false
 }
@@ -411,7 +414,7 @@ async function writeResults(sender_psid, user, users_data){
   finalString += await generateString("laderboard", lan) + "\n";
   for (let i = 0; i < users_data.length; i++) {
     const current = users_data[i];
-    finalString += i + ". "
+    finalString += (i+1) + ". "
     if (current.id == user.id){
       finalString += await generateString("you", lan);
     }
@@ -421,14 +424,8 @@ async function writeResults(sender_psid, user, users_data){
     finalString += " --- " + current.done + " ";
     finalString += await generateString("point", lan) + "\n"
   }
-  finalString += "\n\n" + (await generateString("readyForAnother", lan))
   console.log(finalString);
-  response = templates.buttonMessage(
-    finalString,
-    [templates.button((await(generateString("yes", lan))) + (await generateString("exclamation", lan)) + " " + (await generateString("smiley", lan)), 'YES'),
-    templates.button((await(generateString("enough", lan))), 'NO')]
-  )
-  callSendAPI(sender_psid, response)
+  callSendAPI (sender_psid, {text: finalString})
 }
 
 const showLaderboard = async (sender_psid, user) => {
