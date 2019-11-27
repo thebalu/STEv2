@@ -405,7 +405,7 @@ const showLaderboard = async (sender_psid, user, done) => {
     users_data.push(user);
   }
   console.log("users_data: " + JSON.stringify(users_data))
- 
+  users.sort((a,b) => (a.done > b.done) ? 1 : -1)
   console.log("users_data: " + JSON.stringify(users_data))
 
   /*var fe = await new Promise ((resolve, reject) => {
