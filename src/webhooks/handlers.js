@@ -403,7 +403,7 @@ const showLaderboard = async (sender_psid, user, done) => {
     console.log(user.userFirstName +': ' + user.done);
     results.set(user.done, user.userFirstName);
   }
-  console.log("result: " + JSON.stringify(result))
+  console.log("result: " + JSON.stringify(results))
   const sortedResult =  new Map([...results.entries()].sort((a, b) => b[1] - a[1]));
   console.log("sortedResult: " + JSON.stringify(sortedResult))
 
