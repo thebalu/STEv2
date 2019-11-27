@@ -397,12 +397,12 @@ const showLaderboard = async (sender_psid, user, done) => {
   let users = await db.getAllUsers()
   var results = new Map;
   console.log("stringify: " + JSON.stringify(users))
-  /*for (let i = 0; i < users.length; i++) {
+  for (let i = 0; i < users.length; i++) {
     const user_id = users[i];
     const user = await db.getUser(user_id);
-    console.log(user.name +': ' + user.done);
+    console.log(user.userFirstName +': ' + user.done);
     
-  }*/
+  }
   /*var fe = await new Promise ((resolve, reject) => {
     users.forEach(user_id => {
       db.getUser(user_id)
