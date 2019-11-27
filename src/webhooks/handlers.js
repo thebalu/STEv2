@@ -48,9 +48,9 @@ const handleMessage = async (sender_psid, received_message) => {
       ])
       callSendAPI(sender_psid, response);
       break;
-    case 'laderboard':
+    case 'leaderboard':
     case 'ranglista':
-      await showLaderboard(sender_psid, user)
+      await showleaderboard(sender_psid, user)
       break;
     default:
       var hi = await generateString("hi", lan) + await generateString("exclamation", lan)
@@ -359,9 +359,9 @@ var templateType = {
   "againBegin": "20",
   "againEnd": "21",
   "point": "23",
-  "laderboard": "24",
-  "laderboard_intro_begin":"25",
-  "laderboard_intro_end":"26",
+  "leaderboard": "24",
+  "leaderboard_intro_begin":"25",
+  "leaderboard_intro_end":"26",
   "you":"27"
 };
 
@@ -392,7 +392,7 @@ const maybeShowProgress = async (sender_psid, user, done) => {
     return true
   }
   if (r==2){
-    showLaderboard(sender_psid, user);
+    showleaderboard(sender_psid, user);
   }
   return false
 }
@@ -402,17 +402,17 @@ const maybeShowProgress = async (sender_psid, user, done) => {
 // 1. Ábel --- 18 pont
 // 2. Béla --- 17 pont
 
-// laderboard_intro_begin, Ábel, laderboard_intro_end:
-// laderboard
+// leaderboard_intro_begin, Ábel, leaderboard_intro_end:
+// leaderboard
 // 1. Ábel --- 18 point
 // 2. Béla --- 17 point
 
 async function writeResults(sender_psid, user, users_data){
   var finalString = "";
   var lan = user.language;
-  finalString += await generateString("laderboard_intro_begin", lan) + ", ";
-  finalString += user.userFirstName + ", " + await generateString("laderboard_intro_end", lan) + ":\n";
-  finalString += await generateString("laderboard", lan) + "\n";
+  finalString += await generateString("leaderboard_intro_begin", lan) + ", ";
+  finalString += user.userFirstName + ", " + await generateString("leaderboard_intro_end", lan) + ":\n";
+  finalString += await generateString("leaderboard", lan) + "\n";
   for (let i = 0; i < users_data.length; i++) {
     const current = users_data[i];
     finalString += (i+1) + ". "
@@ -429,7 +429,7 @@ async function writeResults(sender_psid, user, users_data){
   callSendAPI (sender_psid, {text: finalString})
 }
 
-const showLaderboard = async (sender_psid, user) => {
+const showleaderboard = async (sender_psid, user) => {
   let users = await db.getAllUsers()
   var results = new Map();
   var users_data = [];
