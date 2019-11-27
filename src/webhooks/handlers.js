@@ -422,6 +422,12 @@ async function writeResults(sender_psid, user, users_data){
     finalString += await generateString("point", lan) + "\n"
   }
   console.log(finalString);
+  response = templates.buttonMessage(
+    (finalString), [
+    templates.button((await (generateString("yes", lan))) + (await generateString("exclamation", lan)) + " " + (await generateString("smiley", lan)), 'YES')
+
+  ])
+  callSendAPI(sender_psid, response)
 }
 
 const showLaderboard = async (sender_psid, user) => {
