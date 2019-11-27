@@ -397,16 +397,6 @@ const maybeShowProgress = async (sender_psid, user, done) => {
   return false
 }
 
-// Csak így tovább, Ábel, mutatom az eredményeket:
-// RANGLISTA:
-// 1. Ábel --- 18 pont
-// 2. Béla --- 17 pont
-
-// leaderboard_intro_begin, Ábel, leaderboard_intro_end:
-// leaderboard
-// 1. Ábel --- 18 point
-// 2. Béla --- 17 point
-
 async function writeResults(sender_psid, user, users_data){
   var finalString = "";
   var lan = user.language;
