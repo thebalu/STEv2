@@ -35,7 +35,7 @@ const handleMessage = async (sender_psid, received_message) => {
     )
     callSendAPI(sender_psid, response);
   }
-  else switch (received_message.text) {
+  else switch (received_message.text.toLowerCase()) {
 
     case 'leiratkozás':
     case 'unsubscribe':
@@ -48,7 +48,8 @@ const handleMessage = async (sender_psid, received_message) => {
       ])
       callSendAPI(sender_psid, response);
       break;
-    case 'lb':
+    case 'laderboard':
+    case 'ranglista':
       await showLaderboard(sender_psid, user)
       break;
     default:
