@@ -406,9 +406,9 @@ const maybeShowProgress = async (sender_psid, user, done) => {
 async function writeResults(sender_psid, user, users_data){
   var finalString = "";
   var lan = user.language;
-  finalString += await generateString(laderboard_intro_begin, lan) + ", ";
-  finalString += user.name + ", " + await generateString(laderboard_intro_end, lan) + ":\n";
-  finalString += await generateString(laderboard, lan) + "\n";
+  finalString += await generateString("laderboard_intro_begin", lan) + ", ";
+  finalString += user.name + ", " + await generateString("laderboard_intro_end", lan) + ":\n";
+  finalString += await generateString("laderboard", lan) + "\n";
   for (let i = 0; i < users_data.length; i++) {
     const current = users_data[i];
     finalString += i + ". "
