@@ -410,7 +410,8 @@ const showLaderboard = async (sender_psid, user, done) => {
   fe.then(() => {
     console.log("map sort started")
     const mapSort1 = new Map([...results.entries()].sort((a, b) => b[1] - a[1]));
-    console.log("mapSort1: " + mapSort1);             // sorted order
+    console.log("mapSort1: ");             // sorted order
+    console.log(JSON.stringify(mapSort1))
   }
 
   )
