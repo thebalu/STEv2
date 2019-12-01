@@ -18,6 +18,7 @@ const handleMessage = async (sender_psid, received_message) => {
   //       });
   console.log("User: " + user);
   var lan = user.language;
+  let response
   if (titleAdded) {
     titleAdded = false
     title = received_message.text
@@ -42,7 +43,7 @@ const handleMessage = async (sender_psid, received_message) => {
       db.setActive(sender_psid, false);
       var leaving = await generateString("leaving", lan)
       var saveTheEarth = await generateString("saveTheEarth", lan)
-      let response = templates.buttonMessage(
+      response = templates.buttonMessage(
         leaving, [
         templates.button(saveTheEarth, 'ACTIVATE')
       ])
@@ -55,7 +56,7 @@ const handleMessage = async (sender_psid, received_message) => {
     default:
       var hi = await generateString("hi", lan) + await generateString("exclamation", lan)
       var smiley = await generateString("smiley", lan)
-      var whatAbout = await generateString("whatAbout",lan)
+      var whatAbout = await generateString("whatAbout", lan)
       standardReply(sender_psid, received_message, (hi + " " + smiley + " " + whatAbout), lan);
       break;
   }
@@ -82,12 +83,12 @@ const handlePostback = async (sender_psid, received_postback) => {
   } catch (error) {
     console.error("Promise rejected" + error)
   }
-  if (name == ""){
+  if (name == "") {
     console.log("Getting user data from database.")
     var user = (await db.getUser(sender_psid))
-  lan = user.language;
+    lan = user.language;
   }
-  
+
   switch (payload) {
     case 'GET_STARTED':
       console.log("GETSTARTED")
@@ -104,27 +105,31 @@ const handlePostback = async (sender_psid, received_postback) => {
       break;
     case 'HELP':
       response = templates.buttonMessage(
-        (await (generateString("intro_long", lan))), 
+        (await (generateString("intro_long", lan))),
         [templates.button((await (generateString("yes", lan))) + (await generateString("exclamation", lan)), 'YES')
-      ])
+        ])
 
       break;
     case 'DONE':
       db.addNumberDone(sender_psid, user.done + 1)
-      
-      if (await maybeShowProgress(sender_psid, user, user.done + 1)){
-        response = templates.buttonMessage(
-          (await generateString("readyForAnother", lan)),
-          [templates.button((await(generateString("yes", lan))) + (await generateString("exclamation", lan)) + " " + (await generateString("smiley", lan)), 'YES'),
-          templates.button((await(generateString("enough", lan))), 'NO')]
-        )
-      }
-      else{
-        response = templates.buttonMessage(
-          (await generateString("good", lan)) + ', ' + user.userFirstName + '! '+ (await generateString("smiley", lan)) +' ' + (await generateString("readyForAnother", lan)),
-          [templates.button((await(generateString("yes", lan))) + (await generateString("exclamation", lan)) + " " + (await generateString("smiley", lan)), 'YES'),
-          templates.button((await(generateString("enough", lan))), 'NO')]
-        )
+      if (await db.checkFinished(sender_psid)) {
+        finished = await generateString("finishedAll", lan)
+        response = { text: finished }
+      } else {
+        if (await maybeShowProgress(sender_psid, user, user.done + 1)) {
+          response = templates.buttonMessage(
+            (await generateString("readyForAnother", lan)),
+            [templates.button((await (generateString("yes", lan))) + (await generateString("exclamation", lan)) + " " + (await generateString("smiley", lan)), 'YES'),
+            templates.button((await (generateString("enough", lan))), 'NO')]
+          )
+        }
+        else {
+          response = templates.buttonMessage(
+            (await generateString("good", lan)) + ', ' + user.userFirstName + '! ' + (await generateString("smiley", lan)) + ' ' + (await generateString("readyForAnother", lan)),
+            [templates.button((await (generateString("yes", lan))) + (await generateString("exclamation", lan)) + " " + (await generateString("smiley", lan)), 'YES'),
+            templates.button((await (generateString("enough", lan))), 'NO')]
+          )
+        }
       }
       break;
 
@@ -132,18 +137,18 @@ const handlePostback = async (sender_psid, received_postback) => {
       var tipText;
       if (await db.checkFinished(sender_psid)) {
         finished = await generateString("finishedAll", lan)
-        response = {text: finished}
+        response = { text: finished }
       } else {
         try {
           let nextTip = await db.getNextTipForUser(sender_psid);
-          
-          if (user.language=='hu_HU'){
+
+          if (user.language == 'hu_HU') {
             tipText = "*" + nextTip.longTitle + ":* " + nextTip.description + '\nSzólj, ha kész vagy!'
           }
-          else{
+          else {
             tipText = "*" + nextTip.longTitle_en + ":* " + nextTip.description_en + "\nTell me, when you're ready!"
           }
-          
+
         } catch (error) {
           console.error("promise rejected " + error)
         }
@@ -162,22 +167,22 @@ const handlePostback = async (sender_psid, received_postback) => {
       try {
         nextTip = await db.getNextTipForUser(sender_psid);
         var tipText;
-        if (user.language == 'hu_HU'){
+        if (user.language == 'hu_HU') {
           tipText = "Rendben, itt egy másik: \n*" + nextTip.longTitle + ":* " + nextTip.description + '\nSzólj, ha kész vagy!'
         }
-        else{
+        else {
           tipText = "Okay, here is another: \n*" + nextTip.longTitle_en + ":* " + nextTip.description_en + "\nTell me when you're ready!"
         }
-       
+
       } catch (error) {
         console.error("promise rejected " + error)
       }
       let fin = (await generateString("finished", lan)) + (await generateString("exclamation", lan)) + " " + (await generateString("smiley", lan));
       let ano = (await generateString("another", lan));
       response = templates.buttonMessage(
-          tipText,
-          [templates.button(fin, 'DONE'),
-          templates.button(ano, 'ANOTHER')]
+        tipText,
+        [templates.button(fin, 'DONE'),
+        templates.button(ano, 'ANOTHER')]
       )
       break;
     case 'NO':
@@ -191,12 +196,12 @@ const handlePostback = async (sender_psid, received_postback) => {
       await standardReply(sender_psid, received_postback, againBegin + " " + user.userFirstName + againEnd, lan)
       break;
 
-    
+
     case 'UNSUBSCRIBE':
       db.setActive(sender_psid, false);
       var leaving = await generateString("leaving", lan)
       var saveTheEarth = await generateString("saveTheEarth", lan)
-      let response = templates.buttonMessage(
+      response = templates.buttonMessage(
         leaving, [
         templates.button(saveTheEarth, 'ACTIVATE')
       ])
@@ -241,7 +246,7 @@ const callSendAPI = (sender_psid, response, cb = null) => {
   // Send the HTTP request to the Messenger Platform
   request({
     "uri": "https://graph.facebook.com/v2.6/me/messages",
-    "qs": { access_token: config.get('Facebook.access_token')},
+    "qs": { access_token: config.get('Facebook.access_token') },
     "method": "POST",
     "json": request_body
   }, (err, res, body) => {
@@ -264,13 +269,13 @@ const standardReply = async (sender_psid, received_message, before_text, lan) =>
   } catch (error) {
     console.error("Promise rejected" + error);
   }
-  if (lan=='hu_HU'){
+  if (lan == 'hu_HU') {
     tipText = "*" + currentTip.longTitle + ":* " + currentTip.description + '\nSzólj, ha kész vagy!'
   }
-  else{
+  else {
     tipText = "*" + currentTip.longTitle_en + ":* " + currentTip.description_en + "\nTell me when you're done!"
   }
-  
+
 
   response2 = templates.buttonMessage(
     tipText,
@@ -316,8 +321,8 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function waitForLan(){
-  while (lan == "" || lan === undefined){
+async function waitForLan() {
+  while (lan == "" || lan === undefined) {
     await sleep(100);
     console.log("wait in waitForLan where lan is: " + lan)
   }
@@ -348,7 +353,7 @@ async function getAndSaveUserFirstName(senderId) {
       console.log("language ready")
     }
   });
-  
+
   await waitForLan()
   console.log("in getAndFirstName result: " + name);
   return [name, lan];
@@ -380,22 +385,22 @@ var templateType = {
   "againEnd": "21",
   "point": "23",
   "leaderboard": "24",
-  "leaderboard_intro_begin":"25",
-  "leaderboard_intro_end":"26",
-  "you":"27"
+  "leaderboard_intro_begin": "25",
+  "leaderboard_intro_end": "26",
+  "you": "27"
 };
 
 const generateString = async (s, userLanguage) => {
   var list
-  if (userLanguage=='hu_HU' || s == "smiley" || s == "exclamation")
+  if (userLanguage == 'hu_HU' || s == "smiley" || s == "exclamation")
     list = (await db.getStringTemplate(templateType[s])).variations
   else
     list = (await db.getStringTemplate(templateType[s])).variations_en
   var l = list.length
-  console.log("l: " + l)
-  console.log("variations: " + list);
+  // console.log("l: " + l)
+  // console.log("variations: " + list);
   let r = (list[Math.floor(Math.random() * (l))])
-  console.log("generateString return: " + r)
+  // console.log("generateString return: " + r)
   return (r)
 }
 
@@ -403,21 +408,21 @@ const maybeShowProgress = async (sender_psid, user, done) => {
   var r = Math.floor(Math.random() * 6)
   console.log("showing progress")
   var lan = user.language;
-  if (r==1){
+  if (r == 1) {
     good = await generateString("good", lan)
     smiley = await generateString("smiley", lan)
     progB = await generateString("progressBegin", lan)
     progE = await generateString("progressEnd", lan)
-    callSendAPI (sender_psid, {text: good + " "+ user.userFirstName + "! " + smiley + " " + progB + " " + done + " " + progE + " " + smiley})
+    callSendAPI(sender_psid, { text: good + " " + user.userFirstName + "! " + smiley + " " + progB + " " + done + " " + progE + " " + smiley })
     return true
   }
-  if (r==2){
+  if (r == 2) {
     showleaderboard(sender_psid, user);
   }
   return false
 }
 
-async function writeResults(sender_psid, user, users_data){
+async function writeResults(sender_psid, user, users_data) {
   var finalString = "";
   var lan = user.language;
   finalString += await generateString("leaderboard_intro_begin", lan) + ", ";
@@ -426,32 +431,32 @@ async function writeResults(sender_psid, user, users_data){
   for (let i = 0; i < users_data.length; i++) {
     var allLength = 0
     const current = users_data[i];
-    finalString += (i+1) + ". "
-    allLength += (i+1).toString().length
-    if (current.id == user.id){
+    finalString += (i + 1) + ". "
+    allLength += (i + 1).toString().length
+    if (current.id == user.id) {
       const name = await generateString("you", lan);
       finalString += name
       allLength += name.length
     }
-    else{
+    else {
       finalString += current.userFirstName;
       allLength += current.userFirstName.length
     }
-    allLength += current.done.toString().length 
+    allLength += current.done.toString().length
     const point = await generateString("point", lan)
     allLength += point.length
     var kotojel = "-"
-    if (15-allLength > 0) {
-      finalString += " " + kotojel.repeat(15-allLength) +" " + current.done + " ";
+    if (15 - allLength > 0) {
+      finalString += " " + kotojel.repeat(15 - allLength) + " " + current.done + " ";
     }
-    else{
-      finalString += " " + "-" +" " + current.done + " ";
+    else {
+      finalString += " " + "-" + " " + current.done + " ";
     }
-    
+
     finalString += point + "\n"
   }
   console.log(finalString);
-  callSendAPI (sender_psid, {text: finalString})
+  callSendAPI(sender_psid, { text: finalString })
 }
 
 const showleaderboard = async (sender_psid, user) => {
@@ -462,11 +467,11 @@ const showleaderboard = async (sender_psid, user) => {
   for (let i = 0; i < users.length; i++) {
     const user_id = users[i];
     const user = await db.getUser(user_id);
-    console.log(user.userFirstName +': ' + user.done);
+    console.log(user.userFirstName + ': ' + user.done);
     users_data.push(user);
   }
   console.log("users_data: " + JSON.stringify(users_data))
-  users_data.sort((a,b) => (parseInt(a.done) < parseInt(b.done)) ? 1 : -1)
+  users_data.sort((a, b) => (parseInt(a.done) < parseInt(b.done)) ? 1 : -1)
   console.log("users_data: " + JSON.stringify(users_data))
   await writeResults(sender_psid, user, users_data)
 }
