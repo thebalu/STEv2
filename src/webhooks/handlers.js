@@ -40,7 +40,6 @@ const handleMessage = async (sender_psid, received_message) => {
 
     case 'leiratkozás':
     case 'unsubscribe':
-      console.log("handle_message: unsubscribe")
       db.setActive(sender_psid, false);
       var leaving = await generateString("leaving", lan)
       var saveTheEarth = await generateString("saveTheEarth", lan)
@@ -206,7 +205,6 @@ const handlePostback = async (sender_psid, received_postback) => {
         leaving, [
         templates.button(saveTheEarth, 'ACTIVATE')
       ])
-      callSendAPI(sender_psid, response);
       break;
 
     case 'TIPTITLE':
