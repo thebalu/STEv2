@@ -191,6 +191,18 @@ const handlePostback = async (sender_psid, received_postback) => {
       await standardReply(sender_psid, received_postback, againBegin + " " + user.userFirstName + againEnd, lan)
       break;
 
+    
+    case 'UNSUBSCRIBE':
+      db.setActive(sender_psid, false);
+      var leaving = await generateString("leaving", lan)
+      var saveTheEarth = await generateString("saveTheEarth", lan)
+      let response = templates.buttonMessage(
+        leaving, [
+        templates.button(saveTheEarth, 'ACTIVATE')
+      ])
+      callSendAPI(sender_psid, response);
+      break;
+
     case 'TIPTITLE':
       response = { "text": 'Add meg a kihívás rövid címét!' };
       titleAdded = true
