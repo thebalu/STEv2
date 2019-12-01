@@ -52,8 +52,8 @@ const setActive = (userId, active) => {
   })
 }
 
-const switchLang = (userId) => {
-  let lang = await getUser(userId).language
+const switchLang = async (userId) => {
+  let lang = (await getUser(userId)).language
   let newlang = lang == 'hu_HU' ? 'en_US' : 'hu_HU'
   db.collection('users').doc(String(userId)).update({
     language : newlang
