@@ -206,6 +206,10 @@ const handlePostback = async (sender_psid, received_postback) => {
     case 'LEADERBOARD':
       await showleaderboard(sender_psid, user)
       break;
+
+    case 'SWITCH_LANG':
+      await db.switchLang(sender_psid)
+      break;
   }
 
   callSendAPI(sender_psid, response)

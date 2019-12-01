@@ -52,6 +52,14 @@ const setActive = (userId, active) => {
   })
 }
 
+const switchLang = (userId) => {
+  let lang = await getUser(userId).language
+  let newlang = lang == 'hu_HU' ? 'en_US' : 'hu_HU'
+  db.collection('users').doc(String(userId)).update({
+    language : newlang
+  })
+}
+
 const getTipById = async (tipId) => {
   return await db.collection('tips').doc(String(tipId)).get()
       .then(x => x.data())
@@ -114,5 +122,6 @@ module.exports = {
   getStringTemplate,
   checkFinished,
   addNumberDone,
-  addUserLanguage
+  addUserLanguage,
+  switchLang
 }
