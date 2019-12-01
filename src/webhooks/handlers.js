@@ -202,6 +202,10 @@ const handlePostback = async (sender_psid, received_postback) => {
     case 'DISCARDNEWTIP':
       await standardReply(sender_psid, received_postback, 'Jöhet még egy kihívás? :)', lan)
       break;
+
+    case 'LEADERBOARD':
+      await showleaderboard(sender_psid, user)
+      break;
   }
 
   callSendAPI(sender_psid, response)
