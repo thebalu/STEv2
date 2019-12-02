@@ -329,7 +329,8 @@ async function waitForLan() {
 
 async function getAndSaveUserFirstName(senderId) {
   var request = require('request');
-
+  lan = ""
+  name = ""
   request({
     url: "https://graph.facebook.com/v2.6/" + senderId,
     qs: {
